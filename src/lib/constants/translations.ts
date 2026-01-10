@@ -152,6 +152,9 @@ export const translations = {
     'event.details': 'Event Details',
     'event.date': 'Date',
     'event.duration': 'Duration',
+    'event.precedes': 'Precedes',
+    'event.follows': 'Follows',
+    'event.timeline': 'Event Timeline',
 
     // Sidebar
     'sidebar.chapter': 'Chapter',
@@ -208,7 +211,7 @@ export const translations = {
     'nav.home': '홈',
     'nav.browse': '성경 읽기',
     'nav.map': '지도',
-    'nav.timeline': '타임라인',
+    'nav.timeline': '연대표',
     'nav.appTitle': 'in the vine',
     'nav.menu': '메뉴',
     'nav.openMenu': '메뉴 열기',
@@ -353,6 +356,9 @@ export const translations = {
     'event.details': '사건 세부정보',
     'event.date': '날짜',
     'event.duration': '기간',
+    'event.precedes': '이후 사건',
+    'event.follows': '이전 사건',
+    'event.timeline': '연대표',
 
     // Sidebar
     'sidebar.chapter': '장',

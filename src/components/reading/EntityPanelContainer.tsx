@@ -7,42 +7,17 @@ import { useEntityPanel } from '@/lib/contexts/EntityPanelContext';
 import { useUIConfig } from '@/lib/config/uiConfig';
 import { EntityPanel } from './EntityPanel';
 import { PERSON_PANEL_QUERY, PLACE_PANEL_QUERY, EVENT_PANEL_QUERY } from '@/lib/apollo/queries';
+import { useLanguage } from '@/lib/contexts/LanguageContext';
+import { getLocalizedTitle, getLocalizedValue } from '@/lib/utils/bilingual';
 
-type PersonQueryData = {
-  people: Array<{
-    id: string;
-    name: string;
-    slug: string;
-    gender?: string;
-    title?: string;
-    description?: string;
-  }>;
-};
-
-type PlaceQueryData = {
-  places: Array<{
-    id: string;
-    name: string;
-    slug: string;
-    featureType?: string;
-    latitude?: number;
-    longitude?: number;
-    description?: string;
-  }>;
-};
-
-type EventQueryData = {
-  events: Array<{
-    id: string;
-    title: string;
-    startDate?: string;
-  }>;
-};
+// Simplified types for query data since we handle any typing in the component
+type QueryData = any;
 
 export function EntityPanelContainer() {
   const { state, close, clearData } = useEntityPanel();
   const { isOpen, type, slug } = state;
   const { entityPanelAnimation } = useUIConfig();
+  const { language } = useLanguage();
   const pathname = usePathname();
   const prevPathnameRef = React.useRef(pathname);
 
@@ -58,31 +33,27 @@ export function EntityPanelContainer() {
     }
   }, [pathname, isOpen, close]);
 
-  const personQuery = useQuery<PersonQueryData>(PERSON_PANEL_QUERY, {
+  const personQuery = useQuery<QueryData>(PERSON_PANEL_QUERY, {
     variables: { slug, first: 1, after: null },
     skip: !isOpen || type !== 'person' || !slug,
     fetchPolicy: 'cache-first',
   });
 
-  const placeQuery = useQuery<PlaceQueryData>(PLACE_PANEL_QUERY, {
+  const placeQuery = useQuery<QueryData>(PLACE_PANEL_QUERY, {
     variables: { slug, first: 1, after: null },
     skip: !isOpen || type !== 'place' || !slug,
     fetchPolicy: 'cache-first',
   });
 
-  const eventQuery = useQuery<EventQueryData>(EVENT_PANEL_QUERY, {
+  const eventQuery = useQuery<QueryData>(EVENT_PANEL_QUERY, {
     variables: { id: slug, first: 1, after: null },
     skip: !isOpen || type !== 'event' || !slug,
     fetchPolicy: 'cache-first',
   });
 
   // Don't check type/slug here - let AnimatePresence handle unmounting
-  // If we return null immediately, the exit animation won't play
   if (!type || !slug) {
-    // Never opened, safe to skip rendering
     if (!isOpen) return null;
-
-    // Closing without data (shouldn't happen, but handle gracefully)
     return (
       <EntityPanel
         open={isOpen}
@@ -105,19 +76,16 @@ export function EntityPanelContainer() {
 
   if (type === 'person') {
     currentQuery = personQuery;
-    const person = personQuery.data?.people?.[0];
-    entityData = person;
-    debugInfo = `People: ${personQuery.data?.people?.length || 0} | Data: ${!!personQuery.data} | Error: ${personQuery.error?.message || 'none'} | NetworkStatus: ${personQuery.networkStatus}`;
+    entityData = personQuery.data?.people?.[0];
+    debugInfo = `People: ${personQuery.data?.people?.length || 0}`;
   } else if (type === 'place') {
     currentQuery = placeQuery;
-    const place = placeQuery.data?.places?.[0];
-    entityData = place;
-    debugInfo = `Places: ${placeQuery.data?.places?.length || 0} | Data: ${!!placeQuery.data} | Error: ${placeQuery.error?.message || 'none'} | NetworkStatus: ${placeQuery.networkStatus}`;
+    entityData = placeQuery.data?.places?.[0];
+    debugInfo = `Places: ${placeQuery.data?.places?.length || 0}`;
   } else {
     currentQuery = eventQuery;
-    const event = eventQuery.data?.events?.[0];
-    entityData = event;
-    debugInfo = `Events: ${eventQuery.data?.events?.length || 0} | Data: ${!!eventQuery.data} | Error: ${eventQuery.error?.message || 'none'} | NetworkStatus: ${eventQuery.networkStatus}`;
+    entityData = eventQuery.data?.events?.[0];
+    debugInfo = `Events: ${eventQuery.data?.events?.length || 0}`;
   }
 
   const { loading, error } = currentQuery;
@@ -141,7 +109,6 @@ export function EntityPanelContainer() {
 
   if (error || !entityData) {
     const errorMessage = error ? `Error: ${error.message}` : `Not found: ${slug}`;
-
     return (
       <EntityPanel
         open={isOpen}
@@ -159,9 +126,12 @@ export function EntityPanelContainer() {
     );
   }
 
-  const entityName = type === 'event' ? entityData.title : entityData.name;
-
-  const entityNameKr = undefined;
+  let entityName = '';
+  if (type === 'event') {
+    entityName = getLocalizedTitle(entityData, language);
+  } else {
+    entityName = getLocalizedValue(entityData, 'name', entityData.name, language);
+  }
 
   return (
     <EntityPanel
@@ -171,7 +141,6 @@ export function EntityPanelContainer() {
       entityType={type}
       entitySlug={slug}
       entityName={entityName}
-      entityNameKr={entityNameKr}
       summary={entityData.description}
       latitude={type === 'place' ? entityData.latitude : undefined}
       longitude={type === 'place' ? entityData.longitude : undefined}

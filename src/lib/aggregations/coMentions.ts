@@ -1,4 +1,7 @@
-type EntityNode = {
+import { getLocalizedTitle, getLocalizedValue } from '@/lib/utils/bilingual';
+import { Translatable } from '@/lib/types/hierarchy';
+
+type EntityNode = Translatable & {
   slug?: string;
   id?: string;
   name?: string;
@@ -26,7 +29,8 @@ type SubjectEntity = {
 export function topCoMentionsFromRelations(
   verses: VerseNode[],
   subject: SubjectEntity,
-  limit = 20
+  limit = 20,
+  language: 'en' | 'ko' = 'en'
 ) {
   const peopleCounts = new Map<string, { displayText: string; count: number }>();
   const placesCounts = new Map<string, { displayText: string; count: number }>();
@@ -39,7 +43,7 @@ export function topCoMentionsFromRelations(
         if (!slug) continue;
         if (subject.type === 'person' && subject.slug === slug) continue;
 
-        const displayText = node.name || '';
+        const displayText = getLocalizedValue(node, 'name', node.name || '', language);
         const existing = peopleCounts.get(slug);
         if (existing) {
           existing.count += 1;
@@ -55,7 +59,7 @@ export function topCoMentionsFromRelations(
         if (!slug) continue;
         if (subject.type === 'place' && subject.slug === slug) continue;
 
-        const displayText = node.name || '';
+        const displayText = getLocalizedValue(node, 'name', node.name || '', language);
         const existing = placesCounts.get(slug);
         if (existing) {
           existing.count += 1;
@@ -71,7 +75,7 @@ export function topCoMentionsFromRelations(
         if (!id) continue;
         if (subject.type === 'event' && subject.id === id) continue;
 
-        const displayText = node.title || '';
+        const displayText = getLocalizedTitle(node, language);
         const existing = eventsCounts.get(id);
         if (existing) {
           existing.count += 1;

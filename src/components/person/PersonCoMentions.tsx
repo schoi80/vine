@@ -13,7 +13,7 @@ interface PersonCoMentionsProps {
 }
 
 export function PersonCoMentions({ slug }: PersonCoMentionsProps) {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
 
   const { data, loading } = useQuery(PERSON_VERSES_QUERY, {
     variables: {
@@ -39,7 +39,7 @@ export function PersonCoMentions({ slug }: PersonCoMentionsProps) {
   const verses = (data as any)?.people?.[0]?.versesConnection?.edges?.map((e: any) => e.node) ?? [];
   if (verses.length === 0) return null;
 
-  const coMentions = topCoMentionsFromRelations(verses, { type: 'person', slug }, 20);
+  const coMentions = topCoMentionsFromRelations(verses, { type: 'person', slug }, 20, language);
 
   const peopleItems = coMentions.people.map(({ slug: coSlug, displayText, count }) => ({
     type: 'person' as const,

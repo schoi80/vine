@@ -13,7 +13,7 @@ interface EventCoMentionsProps {
 }
 
 export function EventCoMentions({ id }: EventCoMentionsProps) {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
 
   const { data, loading } = useQuery(EVENT_VERSES_QUERY, {
     variables: {
@@ -39,7 +39,7 @@ export function EventCoMentions({ id }: EventCoMentionsProps) {
   const verses = (data as any)?.events?.[0]?.versesConnection?.edges?.map((e: any) => e.node) ?? [];
   if (verses.length === 0) return null;
 
-  const coMentions = topCoMentionsFromRelations(verses, { type: 'event', id }, 20);
+  const coMentions = topCoMentionsFromRelations(verses, { type: 'event', id }, 20, language);
 
   const peopleItems = coMentions.people.map(({ slug: coSlug, displayText, count }) => ({
     type: 'person' as const,
