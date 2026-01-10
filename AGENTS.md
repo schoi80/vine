@@ -1,114 +1,51 @@
-## Project Overview
+# Vine Project: Agent Guide
 
-This is a bilingual (English/Korean) Bible companion app with a **Neo4j graph database backend** and **Next.js frontend** integrated into a single repository. The app enables contextual reading of Scripture by exposing rich relationships between verses, people, places, and events through a GraphQL API served via Next.js API Routes.
+## OVERVIEW
 
-**Architecture:** Unified Next.js Application
-- **API (Backend):** Apollo Server integrated into Next.js Route Handlers (`src/app/api/graphql/route.ts`)
-- **Frontend:** Next.js 16 App Router + TypeScript (port 8080)
-- **Database:** Neo4j (ports 7474/7687)
-- **Source Layout:** All source code in `src/` directory
+Bilingual (English/Korean) Bible Graph Explorer. Rich scripture context via relationships between verses, people, places, and events. Unified Next.js mono-repo with Neo4j backend.
 
-## Common Commands
+## STRUCTURE
 
-### Development
-```bash
-# Install dependencies
-make install
-# Shortcut for npm install --legacy-peer-deps
+- `src/app/`: Next.js App Router (Routes & Layouts)
+- `src/components/`: Feature-based React components
+- `src/lib/`: Core logic, drivers, and utilities
+- `src/stories/`: Legacy Storybook components and documentation
+- `src/types/`: Consolidated TypeScript definitions
 
-# Start development server (http://localhost:8080)
-make dev
+## WHERE TO LOOK
 
-# Start Storybook (Design System) (http://localhost:6006)
-make storybook
-```
+| Task                | Path                                   |
+| :------------------ | :------------------------------------- |
+| **Graph Schema**    | `src/lib/apollo/schema.graphql`        |
+| **Database Logic**  | `src/lib/neo4j/driver.ts`              |
+| **Design System**   | `src/components/ui/`                   |
+| **Visualizations**  | `src/components/visualizations/`       |
+| **Bilingual Logic** | `src/lib/utils/bilingual.ts`           |
+| **Entity State**    | `src/lib/contexts/LanguageContext.tsx` |
 
-### Code Quality (Makefile shortcuts)
-```bash
-# From project root
-make lint                   # Run ESLint
-make lint-fix               # Auto-fix lint errors
-make format                 # Apply Prettier formatting
-make format-check           # Check formatting
-make typecheck              # TypeScript compilation check (npx tsc --noEmit)
-make quality                # Run format + lint + typecheck
-```
+## CONVENTIONS
 
-## Architecture & Key Concepts
+- **Bilingual**: Use `useLanguage()` hook. **No hardcoded text** in components.
+- **Commits**: Conventional Commits MANDATORY (`feat:`, `fix:`, `docs:`, etc.).
+- **Styling**: Tailwind CSS v4. Use utility classes from `src/app/globals.css`.
+- **State**: Centralized contexts in `src/lib/contexts/`.
 
-### GraphQL Schema (Neo4j GraphQL v7)
+## ANTI-PATTERNS (CRITICAL)
 
-The backend uses **Neo4j GraphQL Library v7** which auto-generates queries/mutations from type definitions. Schema is at `src/lib/apollo/schema.graphql`.
+- **Leaflet SSR**: No direct imports of Leaflet/React-Leaflet in SSR components. Use `next/dynamic`.
+- **Badge vs Chip**: `Chip` is DEPRECATED. Always use `Badge` for entity tags.
+- **Hydration Errors**: No `Math.random()` or date formatting in SSR render. Use `useEffect`.
+- **Mention Parsing**: `parseEntityMentions` requires specific regex order (Broken -> Standard -> Wiki).
 
-**Key entity types:**
-- `Testament` → `Division` → `Book` → `Chapter` → `Verse` (hierarchical text structure)
-- `Person`, `Place`, `Event`, `PeopleGroup` (contextual entities)
+## COMMANDS
 
-**Querying:** Filters use generic operator objects (v7 syntax):
-- `where: { slug: { eq: "gen" } }`
-- Response structure: `{ edges { node { ...fields } } }`
+- `make dev`: Start dev server (Port 8080)
+- `make quality`: Run format, lint, and typecheck
+- `make storybook`: Start UI design environment (Port 6006)
+- `make install`: Install dependencies with `--legacy-peer-deps`
 
-### Frontend Architecture (Next.js App Router)
+## TESTING
 
-**App Router structure (`src/app`):**
-- `/` - Home page
-- `/read/[bookSlug]/[chapterNum]` - Main chapter reading (e.g., `/read/gen/1`)
-- `/person/[slug]`, `/place/[slug]`, `/event/[slug]` - Entity details
-- `/browse`, `/map`, `/timeline` - Navigation/visualization pages
-
-**Apollo Client Setup:**
-Uses `@apollo/experimental-nextjs-app-support` for App Router compatibility. Client is in `src/lib/apollo/client.ts`.
-
-**State Management:**
-- `LanguageContext` (`src/lib/contexts/LanguageContext.tsx`) - Bilingual EN/KR support with localStorage persistence
-- URL state for navigation (book slug + chapter number in route)
-
-### Design System (Tailwind v4)
-
-Uses **Tailwind CSS v4** with `@tailwindcss/postcss`.
-
-**Colors & Styling:**
-- UI: Modern, premium dark/light modes.
-- Color-coded entities: Person (Blue), Place (Green), Event (Purple).
-- Typography: Serif fonts for Scripture text, Sans-serif for UI.
-
-### Bilingual Implementation
-
-All text content has English and Korean versions.
-- Use `useLanguage()` hook to access current language and translations.
-- Translations managed in `src/lib/constants/translations.ts`.
-
-## Environment Variables
-
-Defined in `.env` (or `.env.local`):
-```env
-NEXT_PUBLIC_GRAPHQL_URL=http://localhost:8080/api/graphql
-NEO4J_URI=neo4j://localhost:7687
-NEO4J_USER=neo4j
-NEO4J_PASSWORD=your_password
-```
-
-## File Locations Reference
-
-**Source Root:** `src/`
-
-- **App Router:** `src/app/`
-- **Components:** `src/components/`
-- **GraphQL Schema:** `src/lib/apollo/schema.graphql`
-- **GraphQL Queries:** `src/lib/apollo/queries.ts`
-- **Neo4j Driver:** `src/lib/neo4j/driver.ts`
-- **Global Styles:** `src/app/globals.css`
-- **TypeScript Types:** `src/types/` (if consolidated)
-
----
-
-## Development Guidelines
-
-### Git Commits
-**ALWAYS use Conventional Commits:** `feat:`, `fix:`, `docs:`, `style:`, `refactor:`, `test:`, `chore:`.
-
-### Quality Workflow
-1. `make format`
-2. `make lint`
-3. `make typecheck`
-4. `npm run build` (for major changes)
+- **Vitest**: Logic and component unit tests (`npm run test`).
+- **Storybook**: Visual verification for UI components.
+- **Coverage**: Currently low; prioritize testing for new `lib/utils` logic.
