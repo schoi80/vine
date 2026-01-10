@@ -12,6 +12,7 @@ import {
 } from '@/lib/utils/pedigreeLayout';
 import { useLanguage } from '@/lib/contexts/LanguageContext';
 import { useEntityPanel } from '@/lib/contexts/EntityPanelContext';
+import { getLocalizedValue } from '@/lib/utils/bilingual';
 
 interface PedigreeChartProps {
   slug: string;
@@ -22,7 +23,7 @@ const MAX_SCALE = 3.0;
 const ZOOM_SPEED = 0.001;
 
 export default function PedigreeChart({ slug }: PedigreeChartProps) {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const { open } = useEntityPanel();
   const svgRef = useRef<SVGSVGElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -131,6 +132,7 @@ export default function PedigreeChart({ slug }: PedigreeChartProps) {
 
   const getTooltipText = (node: PedigreeNode): string => {
     const roleLabel = getRoleLabel(node.role);
+    const localizedName = getLocalizedValue(node.person, 'name', node.person.name, language);
     const lifespan =
       node.person.birthYear && node.person.deathYear
         ? `${node.person.birthYear}–${node.person.deathYear}`
@@ -140,7 +142,7 @@ export default function PedigreeChart({ slug }: PedigreeChartProps) {
             ? `d. ${node.person.deathYear}`
             : '';
 
-    return [roleLabel, node.person.name, lifespan].filter(Boolean).join(' • ');
+    return [roleLabel, localizedName, lifespan].filter(Boolean).join(' • ');
   };
 
   if (loading) {
@@ -264,9 +266,15 @@ export default function PedigreeChart({ slug }: PedigreeChartProps) {
               borderColor = '#3b82f6';
             }
 
+            const localizedName = getLocalizedValue(
+              node.person,
+              'name',
+              node.person.name,
+              language
+            );
             const nameWithGender = genderSymbol
-              ? `${node.person.name} ${genderSymbol}`
-              : node.person.name;
+              ? `${localizedName} ${genderSymbol}`
+              : localizedName;
 
             const roleLabel = getRoleLabel(node.role);
             const hasLifespan = node.person.birthYear || node.person.deathYear;

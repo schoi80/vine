@@ -9,6 +9,8 @@ import { clusterByDensity } from '@/lib/utils/timeline/clusterByDensity';
 import type { TimelineEvent, EventEra } from '@/lib/types/timeline';
 import { groupEventsByEra } from '@/lib/utils/eraClassifier';
 import { EVENT_ERAS } from '@/lib/constants/eventEras';
+import { useLanguage } from '@/lib/contexts/LanguageContext';
+import { getLocalizedTitle } from '@/lib/utils/bilingual';
 
 interface TimelineViewProps {
   initialEvents: TimelineEvent[];
@@ -17,17 +19,23 @@ interface TimelineViewProps {
 export default function TimelineView({ initialEvents }: TimelineViewProps) {
   const [query, setQuery] = useState('');
   const deferredQuery = useDeferredValue(query);
+  const { language } = useLanguage();
 
   const filtered = useMemo(() => {
     if (!deferredQuery) return initialEvents;
     const q = deferredQuery.toLowerCase();
-    return initialEvents.filter(
-      e =>
-        e.title?.toLowerCase().includes(q) ||
+    return initialEvents.filter(e => {
+      const title = e.title?.toLowerCase() || '';
+      const localizedTitle = getLocalizedTitle(e, language).toLowerCase();
+
+      return (
+        title.includes(q) ||
+        localizedTitle.includes(q) ||
         e.participants?.some(p => p.name?.toLowerCase().includes(q)) ||
         e.occurredIn?.some(pl => pl.name?.toLowerCase().includes(q))
-    );
-  }, [initialEvents, deferredQuery]);
+      );
+    });
+  }, [initialEvents, deferredQuery, language]);
 
   const groupedByEra = useMemo(() => {
     const grouped = groupEventsByEra(filtered);
@@ -55,26 +63,11 @@ export default function TimelineView({ initialEvents }: TimelineViewProps) {
         <TimelineAxis />
 
         <div className="relative">
-          {groupedByEra.map(({ era, items }, _eraIndex) => {
+          {groupedByEra.map(({ era, items }) => {
             const clusters = clusterByDensity(items, { thresholdYears: 3 });
-            // const eraColor = EVENT_ERAS[era]?.color || '#9ca3af';
-            // const rgbColor = hexToRgb(eraColor);
-            // const nextEra = groupedByEra[eraIndex + 1]?.era;
-            // const nextColor = nextEra ? EVENT_ERAS[nextEra]?.color : null;
-            // const nextRgbColor = nextColor ? hexToRgb(nextColor) : null;
 
             return (
-              <section
-                key={era}
-                id={`era-${era}`}
-                className="relative"
-                // style={{
-                //   backgroundColor: `rgb(${rgbColor} / 0.3)`,
-                //   backgroundImage: nextRgbColor
-                //     ? `linear-gradient(to bottom, rgb(${rgbColor} / 0.3) 0%, rgb(${rgbColor} / 0.3) 70%, rgb(${nextRgbColor} / 0.3) 100%)`
-                //     : undefined,
-                // }}
-              >
+              <section key={era} id={`era-${era}`} className="relative">
                 <EraHeader era={era} />
                 <div className="relative z-10 space-y-10">
                   {clusters.map((c, idx) => (

@@ -1,10 +1,9 @@
+import { getLocalizedBookName } from '@/lib/utils/bilingual';
+import { Book } from '@/lib/types/hierarchy';
+
 type VerseNode = {
   chapter?: {
-    book?: {
-      title?: string;
-      bookNameKr?: string;
-      slug?: string;
-    };
+    book?: Book;
   };
 };
 
@@ -15,10 +14,7 @@ export function groupByBook(verses: VerseNode[], language: 'en' | 'ko') {
     const book = verse.chapter?.book;
     if (!book || !book.slug) continue;
 
-    const label =
-      language === 'ko'
-        ? book.bookNameKr || book.title || book.slug
-        : book.title || book.bookNameKr || book.slug;
+    const label = getLocalizedBookName(book, language) || book.slug;
 
     if (!map.has(book.slug)) {
       map.set(book.slug, { label, slug: book.slug, count: 0 });

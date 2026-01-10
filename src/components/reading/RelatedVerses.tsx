@@ -6,6 +6,7 @@ import { useLanguage } from '@/lib/contexts/LanguageContext';
 import { EntityType } from '@/lib/utils/parseEntityMentions';
 import { PERSON_VERSES_QUERY, PLACE_VERSES_QUERY, EVENT_VERSES_QUERY } from '@/lib/apollo/queries';
 import { RelatedVersesView } from './RelatedVersesView';
+import { getLocalizedBookName, getLocalizedValue } from '@/lib/utils/bilingual';
 
 interface RelatedVersesProps {
   entityType: EntityType;
@@ -19,10 +20,6 @@ interface RelatedVersesProps {
 
 /**
  * RelatedVerses - Container component for fetching and displaying related verses
- *
- * This is the Container in the Container/View pattern.
- * Handles data fetching, Apollo queries, state management, and language logic.
- * Delegates pure presentation to RelatedVersesView.
  */
 export function RelatedVerses({
   entityType,
@@ -91,7 +88,6 @@ export function RelatedVerses({
 
   const entityKey =
     entityType === 'person' ? 'people' : entityType === 'place' ? 'places' : 'events';
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const connectionData = (data as any)?.[entityKey]?.[0]?.versesConnection;
 
   if (!connectionData || connectionData.edges.length === 0) {
@@ -99,21 +95,14 @@ export function RelatedVerses({
   }
 
   const allVerses = connectionData.edges
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     .map((edge: any) => {
       const verse = edge.node;
       return {
-        book:
-          language === 'ko'
-            ? verse.chapter?.book?.bookNameKr || verse.chapter?.book?.title || 'Unknown'
-            : verse.chapter?.book?.title || 'Unknown',
+        book: getLocalizedBookName(verse.chapter?.book, language) || 'Unknown',
         bookOrder: verse.chapter?.book?.bookOrder ?? 999,
         chapter: verse.chapter?.chapterNum || 0,
         verse: verse.verseNum,
-        text:
-          language === 'ko'
-            ? verse.mdTextKr || verse.mdText || verse.verseText || ''
-            : verse.mdText || verse.verseText || '',
+        text: getLocalizedValue(verse, 'mdText', verse.mdText || verse.verseText || '', language),
       };
     })
     .sort(

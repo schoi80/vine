@@ -1,3 +1,5 @@
+import { Translation, Translatable } from './hierarchy';
+
 /**
  * Type definitions for Event Timeline visualization
  */
@@ -22,7 +24,7 @@ export type EventEra =
 export interface EraConfig {
   id: EventEra;
   title: string;
-  titleKr: string;
+  translations?: Translation[];
   color: string;
   sortOrder: number;
   minYear: number;
@@ -30,9 +32,10 @@ export interface EraConfig {
   keywords?: string[];
 }
 
-export interface TimelineEvent {
+export interface TimelineEvent extends Translatable {
   id: string;
   title: string;
+
   startDate?: number;
   duration?: string;
   sortKey: string;
@@ -55,20 +58,17 @@ export interface TimelineEvent {
     verseNum: number;
     chapter: {
       chapterNum: number;
-      book: {
+      book: Translatable & {
         shortName: string;
-        bookNameKr?: string;
         slug: string;
       };
     };
   }>;
   precedes: Array<{
     id: string;
-    title: string;
   }>;
   follows: Array<{
     id: string;
-    title: string;
   }>;
 }
 

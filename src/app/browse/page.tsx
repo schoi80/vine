@@ -1,6 +1,12 @@
 import { getClient } from '@/lib/apollo/client';
 import { GET_ALL_BOOKS } from '@/lib/apollo/queries';
 import BrowseContent from '@/components/browse/BrowseContent';
+import {
+  getLocalizedBookName,
+  getLocalizedTitle,
+  getLocalizedShortName,
+} from '@/lib/utils/bilingual';
+import { Translation } from '@/lib/types/hierarchy';
 
 export interface Book {
   slug: string;
@@ -12,12 +18,14 @@ export interface Book {
   divisionTitle: string;
   divisionTitleKr: string;
   chaptersCount: number;
+  translations?: Translation[];
 }
 
 export interface Division {
   title: string;
   titleKr: string;
   books: Book[];
+  translations?: Translation[];
 }
 
 export interface Testament {
@@ -25,89 +33,55 @@ export interface Testament {
   titleKr: string;
   divisions: Division[];
   books: Book[];
+  translations?: Translation[];
 }
 
 export default async function BrowsePage() {
   const client = getClient();
 
-  const { data } = await client.query<{
-    testaments: Array<{
-      title: string;
-      titleKr: string;
-      divisions: Array<{
-        title: string;
-        titleKr: string;
-        books: Array<{
-          slug: string;
-          title: string;
-          bookNameKr: string;
-          shortName: string;
-          shortNameKr: string;
-          bookOrder: number;
-          division: {
-            title: string;
-            titleKr: string;
-          } | null;
-          chaptersConnection: {
-            totalCount: number;
-          };
-        }>;
-      }>;
-      books: Array<{
-        slug: string;
-        title: string;
-        bookNameKr: string;
-        shortName: string;
-        shortNameKr: string;
-        bookOrder: number;
-        division: {
-          title: string;
-          titleKr: string;
-        } | null;
-        chaptersConnection: {
-          totalCount: number;
-        };
-      }>;
-    }>;
-  }>({
+  const { data } = await client.query<any>({
     query: GET_ALL_BOOKS,
   });
 
   // Transform the data to match our Book interface
-  const testaments: Testament[] = (data?.testaments || []).map(testament => ({
+  const testaments: Testament[] = (data?.testaments || []).map((testament: any) => ({
     title: testament.title,
-    titleKr: testament.titleKr,
+    titleKr: getLocalizedTitle(testament, 'ko'),
+    translations: testament.translations,
     divisions: testament.divisions
-      .sort((a, b) => a.title.localeCompare(b.title))
-      .map(division => ({
+      .sort((a: any, b: any) => a.title.localeCompare(b.title))
+      .map((division: any) => ({
         title: division.title,
-        titleKr: division.titleKr,
+        titleKr: getLocalizedTitle(division, 'ko'),
+        translations: division.translations,
         books: division.books
-          .sort((a, b) => a.bookOrder - b.bookOrder)
-          .map(book => ({
+          .sort((a: any, b: any) => a.bookOrder - b.bookOrder)
+          .map((book: any) => ({
             slug: book.slug,
             title: book.title,
-            bookNameKr: book.bookNameKr,
+            bookNameKr: getLocalizedBookName(book, 'ko'),
             shortName: book.shortName,
-            shortNameKr: book.shortNameKr,
+            shortNameKr: getLocalizedShortName(book, 'ko'),
             bookOrder: book.bookOrder,
             divisionTitle: book.division?.title || division.title,
-            divisionTitleKr: book.division?.titleKr || division.titleKr,
+            divisionTitleKr: getLocalizedTitle(book.division || division, 'ko'),
             chaptersCount: book.chaptersConnection.totalCount,
+            translations: book.translations,
           })),
       })),
     books: testament.books
-      .sort((a, b) => a.bookOrder - b.bookOrder)
-      .map(book => ({
+      .sort((a: any, b: any) => a.bookOrder - b.bookOrder)
+      .map((book: any) => ({
         slug: book.slug,
         title: book.title,
-        bookNameKr: book.bookNameKr,
+        bookNameKr: getLocalizedBookName(book, 'ko'),
         shortName: book.shortName,
-        shortNameKr: book.shortNameKr,
+        shortNameKr: getLocalizedShortName(book, 'ko'),
         bookOrder: book.bookOrder,
         divisionTitle: book.division?.title || '',
-        divisionTitleKr: book.division?.titleKr || '',
+        divisionTitleKr: getLocalizedTitle(book.division, 'ko'),
         chaptersCount: book.chaptersConnection.totalCount,
+        translations: book.translations,
       })),
   }));
 

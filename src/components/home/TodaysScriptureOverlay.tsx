@@ -6,6 +6,7 @@ import { useSuspenseQuery } from '@apollo/experimental-nextjs-app-support/ssr';
 import { GET_DAILY_READING, BOOKS_WITH_COUNTS } from '@/lib/apollo/queries';
 import { useLanguage } from '@/lib/contexts/LanguageContext';
 import { dailySeed, mulberry32 } from '@/lib/utils/random';
+import { getLocalizedBookName } from '@/lib/utils/bilingual';
 
 const STORAGE_KEY = 'bible-daily-reading-date';
 
@@ -17,10 +18,9 @@ type ChapterNode = {
     id: string;
     slug: string;
     title: string;
-    bookNameKr: string;
     shortName: string;
-    shortNameKr: string;
     bookOrder: number;
+    translations?: any[];
   };
 };
 
@@ -39,7 +39,7 @@ type DailyReadingQuery = {
 type BookNode = {
   slug: string;
   title: string;
-  bookNameKr: string;
+  translations?: any[];
   chaptersConnection: { totalCount: number };
 };
 
@@ -138,7 +138,7 @@ export default function TodaysScriptureOverlay() {
           </div>
           <div className="mt-1 space-y-1">
             {sortedChapters.map(chapter => {
-              const label = language === 'ko' ? chapter.book.bookNameKr : chapter.book.title;
+              const label = getLocalizedBookName(chapter.book, language);
               return (
                 <Link
                   key={chapter.id}
@@ -163,7 +163,7 @@ export default function TodaysScriptureOverlay() {
     const book = books[Math.floor(rand() * books.length)];
     const maxChapter = Math.max(1, book?.chaptersConnection?.totalCount ?? 1);
     const chapter = Math.floor(rand() * maxChapter) + 1;
-    const label = language === 'ko' ? book.bookNameKr : book.title;
+    const label = getLocalizedBookName(book, language);
 
     return (
       <div className="z-header pointer-events-none absolute top-20 left-10 md:top-20 md:left-20">

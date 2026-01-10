@@ -41,18 +41,21 @@ A comprehensive bilingual (English/Korean) Bible reading companion powered by a 
 ### Installation
 
 1. **Clone the repository**:
+
    ```bash
    git clone https://github.com/schoi80/vine.git
    cd vine
    ```
 
 2. **Install dependencies**:
+
    ```bash
    make install
    ```
 
 3. **Environment Setup**:
    Create a `.env.local` file in the root:
+
    ```env
    NEXT_PUBLIC_GRAPHQL_URL=http://localhost:8080/api/graphql
    NEO4J_URI=neo4j://localhost:7687

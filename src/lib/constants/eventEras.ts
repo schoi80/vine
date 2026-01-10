@@ -1,4 +1,4 @@
-import type { EraConfig, EventEra } from '../types/timeline';
+import type { Translation, EraConfig, EventEra } from '../types/timeline';
 
 /**
  * Configuration for biblical eras/periods
@@ -8,7 +8,7 @@ export const EVENT_ERAS: Record<EventEra, EraConfig> = {
   creation: {
     id: 'creation',
     title: 'Creation',
-    titleKr: '창조',
+    translations: [{ language: 'ko', field: 'title', text: '창조' }],
     color: '#fbbf24',
     sortOrder: 1,
     minYear: -5000,
@@ -18,7 +18,7 @@ export const EVENT_ERAS: Record<EventEra, EraConfig> = {
   patriarchs: {
     id: 'patriarchs',
     title: 'Patriarchs',
-    titleKr: '족장 시대',
+    translations: [{ language: 'ko', field: 'title', text: '족장 시대' }],
     color: '#fb923c',
     sortOrder: 2,
     minYear: -2350,
@@ -40,7 +40,7 @@ export const EVENT_ERAS: Record<EventEra, EraConfig> = {
   exodus: {
     id: 'exodus',
     title: 'Exodus',
-    titleKr: '출애굽',
+    translations: [{ language: 'ko', field: 'title', text: '출애굽' }],
     color: '#f87171',
     sortOrder: 3,
     minYear: -1500,
@@ -50,7 +50,7 @@ export const EVENT_ERAS: Record<EventEra, EraConfig> = {
   conquest: {
     id: 'conquest',
     title: 'Conquest',
-    titleKr: '정복 시대',
+    translations: [{ language: 'ko', field: 'title', text: '정복 시대' }],
     color: '#ec4899',
     sortOrder: 4,
     minYear: -1400,
@@ -60,7 +60,7 @@ export const EVENT_ERAS: Record<EventEra, EraConfig> = {
   judges: {
     id: 'judges',
     title: 'Judges',
-    titleKr: '사사 시대',
+    translations: [{ language: 'ko', field: 'title', text: '사사 시대' }],
     color: '#a78bfa',
     sortOrder: 5,
     minYear: -1350,
@@ -70,7 +70,7 @@ export const EVENT_ERAS: Record<EventEra, EraConfig> = {
   'united-kingdom': {
     id: 'united-kingdom',
     title: 'United Kingdom',
-    titleKr: '통일 왕국',
+    translations: [{ language: 'ko', field: 'title', text: '통일 왕국' }],
     color: '#818cf8',
     sortOrder: 6,
     minYear: -1050,
@@ -80,7 +80,7 @@ export const EVENT_ERAS: Record<EventEra, EraConfig> = {
   'divided-kingdom': {
     id: 'divided-kingdom',
     title: 'Divided Kingdom',
-    titleKr: '분열 왕국',
+    translations: [{ language: 'ko', field: 'title', text: '분열 왕국' }],
     color: '#60a5fa',
     sortOrder: 7,
     minYear: -930,
@@ -90,7 +90,7 @@ export const EVENT_ERAS: Record<EventEra, EraConfig> = {
   exile: {
     id: 'exile',
     title: 'Exile',
-    titleKr: '포로 시대',
+    translations: [{ language: 'ko', field: 'title', text: '포로 시대' }],
     color: '#38bdf8',
     sortOrder: 8,
     minYear: -586,
@@ -100,7 +100,7 @@ export const EVENT_ERAS: Record<EventEra, EraConfig> = {
   return: {
     id: 'return',
     title: 'Return',
-    titleKr: '귀환',
+    translations: [{ language: 'ko', field: 'title', text: '귀환' }],
     color: '#22d3ee',
     sortOrder: 9,
     minYear: -539,
@@ -110,7 +110,7 @@ export const EVENT_ERAS: Record<EventEra, EraConfig> = {
   intertestamental: {
     id: 'intertestamental',
     title: 'Intertestamental',
-    titleKr: '중간 시대',
+    translations: [{ language: 'ko', field: 'title', text: '중간 시대' }],
     color: '#34d399',
     sortOrder: 10,
     minYear: -400,
@@ -120,7 +120,7 @@ export const EVENT_ERAS: Record<EventEra, EraConfig> = {
   jesus: {
     id: 'jesus',
     title: 'Life of Jesus',
-    titleKr: '예수의 생애',
+    translations: [{ language: 'ko', field: 'title', text: '예수의 생애' }],
     color: '#4ade80',
     sortOrder: 11,
     minYear: -4,
@@ -130,7 +130,7 @@ export const EVENT_ERAS: Record<EventEra, EraConfig> = {
   'early-church': {
     id: 'early-church',
     title: 'Early Church',
-    titleKr: '초대 교회',
+    translations: [{ language: 'ko', field: 'title', text: '초대 교회' }],
     color: '#84cc16',
     sortOrder: 12,
     minYear: 34,
@@ -140,7 +140,7 @@ export const EVENT_ERAS: Record<EventEra, EraConfig> = {
   'middle-ages': {
     id: 'middle-ages',
     title: 'Middle Ages',
-    titleKr: '중세 시대',
+    translations: [{ language: 'ko', field: 'title', text: '중세 시대' }],
     color: '#9ca3af',
     sortOrder: 33,
     minYear: 330,
@@ -149,7 +149,7 @@ export const EVENT_ERAS: Record<EventEra, EraConfig> = {
   reformation: {
     id: 'reformation',
     title: 'Reformation',
-    titleKr: '종교 개혁',
+    translations: [{ language: 'ko', field: 'title', text: '종교 개혁' }],
     color: '#9ca3af',
     sortOrder: 34,
     minYear: 1517,
@@ -158,7 +158,7 @@ export const EVENT_ERAS: Record<EventEra, EraConfig> = {
   'revelation-prophecies': {
     id: 'revelation-prophecies',
     title: 'Revelation & Prophecies',
-    titleKr: '요한계시록과 예언',
+    translations: [{ language: 'ko', field: 'title', text: '요한계시록과 예언' }],
     color: '#9ca3af',
     sortOrder: 35,
     minYear: 1840,

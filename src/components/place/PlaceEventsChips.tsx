@@ -7,6 +7,7 @@ import { useUIConfig } from '@/lib/config/uiConfig';
 import { TagList, type TagItem } from '@/components/shared/TagList';
 import { useLanguage } from '@/lib/contexts/LanguageContext';
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
+import { getLocalizedTitle } from '@/lib/utils/bilingual';
 
 interface PlaceEventsChipsProps {
   slug: string;
@@ -14,7 +15,7 @@ interface PlaceEventsChipsProps {
 
 export function PlaceEventsChips({ slug }: PlaceEventsChipsProps) {
   const config = useUIConfig();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
 
   const { data, loading } = useQuery(PLACE_EVENTS_CHIPS, {
     variables: {
@@ -45,7 +46,7 @@ export function PlaceEventsChips({ slug }: PlaceEventsChipsProps) {
 
   const items: TagItem[] =
     place.eventsConnection?.edges?.map(({ node }: any) => ({
-      label: node.title,
+      label: getLocalizedTitle(node, language),
       color: 'event' as const,
       entity: { kind: 'event' as const, id: node.id },
     })) ?? [];

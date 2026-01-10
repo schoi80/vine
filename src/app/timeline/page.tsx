@@ -19,6 +19,7 @@ export default async function TimelinePage() {
       .map((event: any) => ({
         id: event.id,
         title: event.title,
+        translations: event.translations, // Include translations
         startDate: extractYearFromDateString(event.startDate),
         duration: event.duration,
         sortKey: event.sortKey,

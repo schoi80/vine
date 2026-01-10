@@ -5,6 +5,7 @@ import { Search, X, Users, MapPin, Calendar } from 'lucide-react';
 import type { TimelineEvent, TimelineFilters as Filters, EventEra } from '@/lib/types/timeline';
 import { useLanguage } from '@/lib/contexts/LanguageContext';
 import { getAllEras } from '@/lib/constants/eventEras';
+import { getLocalizedTitle } from '@/lib/utils/bilingual';
 
 interface TimelineFiltersProps {
   events: TimelineEvent[];
@@ -165,7 +166,7 @@ export default function TimelineFilters({
               }}
             >
               <Calendar className="h-3 w-3" />
-              <span>{language === 'ko' ? eraConfig.titleKr : eraConfig.title}</span>
+              <span>{getLocalizedTitle(eraConfig, language)}</span>
               <X className="h-3 w-3" />
             </button>
           );
@@ -300,9 +301,7 @@ export default function TimelineFilters({
                 style={{ accentColor: era.color }}
               />
               <div className="h-3 w-3 rounded-full" style={{ backgroundColor: era.color }} />
-              <span className="text-text-primary text-sm">
-                {language === 'ko' ? era.titleKr : era.title}
-              </span>
+              <span className="text-text-primary text-sm">{getLocalizedTitle(era, language)}</span>
             </label>
           ))}
         </div>

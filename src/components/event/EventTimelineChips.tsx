@@ -6,6 +6,7 @@ import { useUIConfig } from '@/lib/config/uiConfig';
 import { useLanguage } from '@/lib/contexts/LanguageContext';
 import { useEntityPanel } from '@/lib/contexts/EntityPanelContext';
 import { EventTimelineChipsView } from './EventTimelineChipsView';
+import { getLocalizedTitle } from '@/lib/utils/bilingual';
 
 interface EventTimelineChipsProps {
   id: string;
@@ -20,7 +21,7 @@ interface EventTimelineChipsProps {
  */
 export function EventTimelineChips({ id }: EventTimelineChipsProps) {
   const config = useUIConfig();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const { open } = useEntityPanel();
 
   const { data, loading } = useQuery(EVENT_TIMELINE_CHIPS, {
@@ -44,9 +45,9 @@ export function EventTimelineChips({ id }: EventTimelineChipsProps) {
         beforeItems={[]}
         afterItems={[]}
         loading={true}
-        title="Timeline"
-        beforeLabel="Before"
-        afterLabel="After"
+        title={t('event.timeline')}
+        beforeLabel={t('event.precedes')}
+        afterLabel={t('event.follows')}
         loadingLabel={t('entityPanel.loading')}
         onItemClick={handleItemClick}
       />
@@ -59,7 +60,7 @@ export function EventTimelineChips({ id }: EventTimelineChipsProps) {
     event.precedesConnection?.edges?.map(({ node }: any) => ({
       type: 'event' as const,
       slug: node.id,
-      label: node.title,
+      label: getLocalizedTitle(node, language),
       frequency: 1,
     })) ?? [];
 
@@ -67,7 +68,7 @@ export function EventTimelineChips({ id }: EventTimelineChipsProps) {
     event.followsConnection?.edges?.map(({ node }: any) => ({
       type: 'event' as const,
       slug: node.id,
-      label: node.title,
+      label: getLocalizedTitle(node, language),
       frequency: 1,
     })) ?? [];
 
@@ -76,9 +77,9 @@ export function EventTimelineChips({ id }: EventTimelineChipsProps) {
       beforeItems={followingEvents}
       afterItems={precedingEvents}
       loading={false}
-      title="Timeline"
-      beforeLabel="Before"
-      afterLabel="After"
+      title={t('event.timeline')}
+      beforeLabel={t('event.precedes')}
+      afterLabel={t('event.follows')}
       loadingLabel={t('entityPanel.loading')}
       onItemClick={handleItemClick}
     />

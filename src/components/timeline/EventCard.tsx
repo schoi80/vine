@@ -3,6 +3,7 @@ import { useLanguage } from '@/lib/contexts/LanguageContext';
 import { Badge } from '@/components/ui/Badge';
 import type { TimelineEvent } from '@/lib/types/timeline';
 import { formatYear } from '@/lib/utils/timeline/clusterByDensity';
+import { getLocalizedTitle, getLocalizedBookName } from '@/lib/utils/bilingual';
 
 interface EventCardProps {
   event: TimelineEvent;
@@ -13,10 +14,8 @@ export default function EventCard({ event, side }: EventCardProps) {
   const { language } = useLanguage();
 
   const verseExcerpt = event.verses?.[0];
-  const excerpt =
-    language === 'ko'
-      ? verseExcerpt?.chapter?.book?.bookNameKr
-      : verseExcerpt?.chapter?.book?.shortName;
+  const excerpt = getLocalizedBookName(verseExcerpt?.chapter?.book, language);
+  const title = getLocalizedTitle(event, language);
 
   const linkHref =
     verseExcerpt?.chapter?.book?.slug && verseExcerpt?.chapter?.chapterNum
@@ -35,7 +34,7 @@ export default function EventCard({ event, side }: EventCardProps) {
             {formatYear(event.startDate)}
           </span>
         )}
-        <h3 className="text-lg font-semibold">{event.title}</h3>
+        <h3 className="text-lg font-semibold">{title}</h3>
       </header>
 
       {excerpt && linkHref && (

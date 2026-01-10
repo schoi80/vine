@@ -12,6 +12,7 @@ import {
 import { EVENT_ERAS, getAllEras, getEraRadius } from '@/lib/constants/eventEras';
 import { classifyEventEra } from '@/lib/utils/eraClassifier';
 import { useLanguage } from '@/lib/contexts/LanguageContext';
+import { getLocalizedTitle } from '@/lib/utils/bilingual';
 
 interface EventTimelineProps {
   events: TimelineEvent[];
@@ -40,6 +41,7 @@ export default function EventTimeline({
   const [isDragging, setIsDragging] = useState(false);
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
   const simulationRef = useRef<any>(null);
+  const { t, language } = useLanguage();
 
   // Build graph data from events
   const graphData = useMemo(() => {
@@ -129,7 +131,6 @@ export default function EventTimeline({
   const centerX = width / 2;
   const centerY = height / 2;
   const eras = getAllEras();
-  const { t } = useLanguage();
 
   if (events.length === 0) {
     return (
@@ -158,6 +159,7 @@ export default function EventTimeline({
           <g className="era-zones">
             {eras.map(era => {
               const radius = getEraRadius(era.id, 80);
+              const localizedEraTitle = getLocalizedTitle(era, language);
               return (
                 <g key={era.id}>
                   <circle
@@ -180,7 +182,7 @@ export default function EventTimeline({
                     textAnchor="middle"
                     opacity={0.6}
                   >
-                    {era.title}
+                    {localizedEraTitle}
                   </text>
                 </g>
               );
@@ -226,6 +228,7 @@ export default function EventTimeline({
               const size = calculateNodeSize(node.event);
               const isSelected = node.id === selectedEventId;
               const eraConfig = EVENT_ERAS[node.era];
+              const localizedTitle = getLocalizedTitle(node.event, language);
 
               return (
                 <g
@@ -254,9 +257,9 @@ export default function EventTimeline({
                     textAnchor="middle"
                     className="pointer-events-none select-none"
                   >
-                    {node.event.title.length > 20
-                      ? `${node.event.title.slice(0, 20)}...`
-                      : node.event.title}
+                    {localizedTitle.length > 20
+                      ? `${localizedTitle.slice(0, 20)}...`
+                      : localizedTitle}
                   </text>
                 </g>
               );

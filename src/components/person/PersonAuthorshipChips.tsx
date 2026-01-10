@@ -7,6 +7,7 @@ import { useUIConfig } from '@/lib/config/uiConfig';
 import { TagList, type TagItem } from '@/components/shared/TagList';
 import { useLanguage } from '@/lib/contexts/LanguageContext';
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
+import { getLocalizedBookName } from '@/lib/utils/bilingual';
 
 interface PersonAuthorshipChipsProps {
   slug: string;
@@ -46,7 +47,7 @@ export function PersonAuthorshipChips({ slug }: PersonAuthorshipChipsProps) {
   const items: TagItem[] =
     person.chaptersWrittenConnection?.edges?.map(({ node }: any) => {
       const book = node.book;
-      const bookLabel = language === 'en' ? book.title : book.bookNameKr;
+      const bookLabel = getLocalizedBookName(book, language);
       const chapterLabel = `${bookLabel} ${node.chapterNum}`;
 
       return {

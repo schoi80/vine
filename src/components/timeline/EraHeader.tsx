@@ -1,6 +1,7 @@
 import { useLanguage } from '@/lib/contexts/LanguageContext';
 import { EVENT_ERAS } from '@/lib/constants/eventEras';
 import type { EventEra } from '@/lib/types/timeline';
+import { getLocalizedTitle } from '@/lib/utils/bilingual';
 
 interface EraHeaderProps {
   era: EventEra;
@@ -14,7 +15,7 @@ export default function EraHeader({ era }: EraHeaderProps) {
     return null;
   }
 
-  const title = language === 'ko' ? eraConfig.titleKr : eraConfig.title;
+  const title = getLocalizedTitle(eraConfig, language);
   const fontClass = language === 'ko' ? 'font-song-myung' : 'font-serif';
 
   return (

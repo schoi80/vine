@@ -1,3 +1,5 @@
+import { getLocalizedBookName } from '@/lib/utils/bilingual';
+
 import { getClient } from '@/lib/apollo/client';
 import { GET_CHAPTER_FOR_READING } from '@/lib/apollo/queries';
 import { notFound } from 'next/navigation';
@@ -47,7 +49,7 @@ export default async function ChapterPage({ params }: PageProps) {
       <div className="mx-auto max-w-4xl">
         <ChapterPageClient
           bookTitle={book.title}
-          bookTitleKr={book.bookNameKr}
+          bookTitleKr={getLocalizedBookName(book, 'ko')}
           chapterNum={chapter.chapterNum}
           bookSlug={bookSlug}
           currentChapter={chapterNumber}

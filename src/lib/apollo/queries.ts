@@ -5,34 +5,43 @@ import { gql } from '@apollo/client';
  * Used for the main reading experience
  *
  * Includes bilingual fields:
- * - testament.titleKr: Korean translation for Testament ("구약", "신약")
- * - division.titleKr: Korean translation for Division ("모세오경", "복음서", etc.)
- * - bookNameKr: Korean book name ("창세기", "마태복음", etc.)
- *
+ * Includes translations relationship for all entities.
  * Access pattern in components:
- *   const testament = book.testament;
- *   const testamentName = language === 'kr' ? testament.titleKr : testament.title;
- *
- * Or use utility:
- *   import { getLocalizedTitle } from '@/lib/utils/bilingual';
- *   const testamentName = getLocalizedTitle(book.testament, language);
+ *   import { getLocalizedTitle } from "@/lib/utils/bilingual";
+ *   const title = getLocalizedTitle(entity, language);
  */
 export const GET_CHAPTER_FOR_READING = gql`
   query GetChapterForReading($bookSlug: String, $chapterNum: Int) {
     books(where: { slug: { eq: $bookSlug } }) {
       id
       title
-      bookNameKr
+      translations(where: { language: { eq: "ko" } }) {
+        language
+        field
+        text
+      }
       shortName
-      shortNameKr
+      translations(where: { language: { eq: "ko" } }) {
+        language
+        field
+        text
+      }
       slug
       testament {
         title
-        titleKr
+        translations(where: { language: { eq: "ko" } }) {
+          language
+          field
+          text
+        }
       }
       division {
         title
-        titleKr
+        translations(where: { language: { eq: "ko" } }) {
+          language
+          field
+          text
+        }
       }
       allChapters: chaptersConnection {
         totalCount
@@ -50,19 +59,38 @@ export const GET_CHAPTER_FOR_READING = gql`
                   id
                   verseNum
                   verseText
+                  translations(where: { language: { eq: "ko" } }) {
+                    language
+                    field
+                    text
+                  }
                   mdText
-                  mdTextKr
+                  translations(where: { language: { eq: "ko" } }) {
+                    language
+                    field
+                    text
+                  }
                   mentionsPeople {
                     id
                     slug
                     name
                     title
+                    translations(where: { language: { eq: "ko" } }) {
+                      language
+                      field
+                      text
+                    }
                     gender
                   }
                   mentionsPlaces {
                     id
                     slug
                     name
+                    translations(where: { language: { eq: "ko" } }) {
+                      language
+                      field
+                      text
+                    }
                     latitude
                     longitude
                     featureType
@@ -70,6 +98,11 @@ export const GET_CHAPTER_FOR_READING = gql`
                   describesEvents {
                     id
                     title
+                    translations(where: { language: { eq: "ko" } }) {
+                      language
+                      field
+                      text
+                    }
                     startDate
                   }
                 }
@@ -78,6 +111,11 @@ export const GET_CHAPTER_FOR_READING = gql`
             writers {
               id
               name
+              translations(where: { language: { eq: "ko" } }) {
+                language
+                field
+                text
+              }
               slug
             }
           }
@@ -86,7 +124,6 @@ export const GET_CHAPTER_FOR_READING = gql`
     }
   }
 `;
-
 /**
  * Query to get all books organized by testament and division
  * Used for the browse page
@@ -95,20 +132,40 @@ export const GET_ALL_BOOKS = gql`
   query GetAllBooks {
     testaments {
       title
-      titleKr
+      translations(where: { language: { eq: "ko" } }) {
+        language
+        field
+        text
+      }
       divisions {
         title
-        titleKr
+        translations(where: { language: { eq: "ko" } }) {
+          language
+          field
+          text
+        }
         books {
           slug
           title
-          bookNameKr
+          translations(where: { language: { eq: "ko" } }) {
+            language
+            field
+            text
+          }
           shortName
-          shortNameKr
+          translations(where: { language: { eq: "ko" } }) {
+            language
+            field
+            text
+          }
           bookOrder
           division {
             title
-            titleKr
+            translations(where: { language: { eq: "ko" } }) {
+              language
+              field
+              text
+            }
           }
           chaptersConnection {
             totalCount
@@ -118,13 +175,25 @@ export const GET_ALL_BOOKS = gql`
       books {
         slug
         title
-        bookNameKr
+        translations(where: { language: { eq: "ko" } }) {
+          language
+          field
+          text
+        }
         shortName
-        shortNameKr
+        translations(where: { language: { eq: "ko" } }) {
+          language
+          field
+          text
+        }
         bookOrder
         division {
           title
-          titleKr
+          translations(where: { language: { eq: "ko" } }) {
+            language
+            field
+            text
+          }
         }
         chaptersConnection {
           totalCount
@@ -133,7 +202,6 @@ export const GET_ALL_BOOKS = gql`
     }
   }
 `;
-
 /**
  * Query to get person details with all relationships
  */
@@ -143,37 +211,72 @@ export const GET_PERSON_DETAIL = gql`
       name
       alsoCalled
       title
+      translations(where: { language: { eq: "ko" } }) {
+        language
+        field
+        text
+      }
       description
       gender
       slug
       parents {
         name
+        translations(where: { language: { eq: "ko" } }) {
+          language
+          field
+          text
+        }
         slug
         gender
         children {
           name
+          translations(where: { language: { eq: "ko" } }) {
+            language
+            field
+            text
+          }
           slug
           gender
         }
       }
       children {
         name
+        translations(where: { language: { eq: "ko" } }) {
+          language
+          field
+          text
+        }
         slug
         gender
       }
       partners {
         name
+        translations(where: { language: { eq: "ko" } }) {
+          language
+          field
+          text
+        }
         slug
         gender
       }
       bornIn {
         name
+        translations(where: { language: { eq: "ko" } }) {
+          language
+          field
+          text
+        }
         slug
         latitude
         longitude
       }
       diedIn {
         name
+        translations(where: { language: { eq: "ko" } }) {
+          language
+          field
+          text
+        }
         slug
         latitude
         longitude
@@ -182,12 +285,21 @@ export const GET_PERSON_DETAIL = gql`
         edges {
           node {
             verseText
+            translations(where: { language: { eq: "ko" } }) {
+              language
+              field
+              text
+            }
             verseNum
             chapter {
               chapterNum
               book {
                 shortName
-                bookNameKr
+                translations(where: { language: { eq: "ko" } }) {
+                  language
+                  field
+                  text
+                }
                 slug
               }
             }
@@ -198,21 +310,41 @@ export const GET_PERSON_DETAIL = gql`
       participatedIn {
         id
         title
+        translations(where: { language: { eq: "ko" } }) {
+          language
+          field
+          text
+        }
         startDate
         duration
         sortKey
         occurredIn {
           id
           name
+          translations(where: { language: { eq: "ko" } }) {
+            language
+            field
+            text
+          }
           slug
         }
         verses {
           verseText
+          translations(where: { language: { eq: "ko" } }) {
+            language
+            field
+            text
+          }
           verseNum
           chapter {
             chapterNum
             book {
               shortName
+              translations(where: { language: { eq: "ko" } }) {
+                language
+                field
+                text
+              }
               slug
             }
           }
@@ -220,20 +352,34 @@ export const GET_PERSON_DETAIL = gql`
         precedes {
           id
           title
+          translations(where: { language: { eq: "ko" } }) {
+            language
+            field
+            text
+          }
         }
         follows {
           id
           title
+          translations(where: { language: { eq: "ko" } }) {
+            language
+            field
+            text
+          }
         }
       }
       memberOf {
         id
         name
+        translations(where: { language: { eq: "ko" } }) {
+          language
+          field
+          text
+        }
       }
     }
   }
 `;
-
 /**
  * Query to get place details
  */
@@ -241,6 +387,11 @@ export const GET_PLACE_DETAIL = gql`
   query GetPlaceDetail($slug: String) {
     places(where: { slug: { eq: $slug } }) {
       name
+      translations(where: { language: { eq: "ko" } }) {
+        language
+        field
+        text
+      }
       latitude
       longitude
       precision
@@ -252,12 +403,21 @@ export const GET_PLACE_DETAIL = gql`
         edges {
           node {
             verseText
+            translations(where: { language: { eq: "ko" } }) {
+              language
+              field
+              text
+            }
             verseNum
             chapter {
               chapterNum
               book {
                 shortName
-                bookNameKr
+                translations(where: { language: { eq: "ko" } }) {
+                  language
+                  field
+                  text
+                }
                 slug
               }
             }
@@ -268,22 +428,42 @@ export const GET_PLACE_DETAIL = gql`
       events {
         id
         title
+        translations(where: { language: { eq: "ko" } }) {
+          language
+          field
+          text
+        }
         startDate
         duration
         sortKey
         participants {
           id
           name
+          translations(where: { language: { eq: "ko" } }) {
+            language
+            field
+            text
+          }
           slug
           gender
         }
         verses {
           verseText
+          translations(where: { language: { eq: "ko" } }) {
+            language
+            field
+            text
+          }
           verseNum
           chapter {
             chapterNum
             book {
               shortName
+              translations(where: { language: { eq: "ko" } }) {
+                language
+                field
+                text
+              }
               slug
             }
           }
@@ -291,16 +471,25 @@ export const GET_PLACE_DETAIL = gql`
         precedes {
           id
           title
+          translations(where: { language: { eq: "ko" } }) {
+            language
+            field
+            text
+          }
         }
         follows {
           id
           title
+          translations(where: { language: { eq: "ko" } }) {
+            language
+            field
+            text
+          }
         }
       }
     }
   }
 `;
-
 /**
  * Query to get event details with timeline context
  */
@@ -309,17 +498,32 @@ export const GET_EVENT_DETAIL = gql`
     events(where: { id: { eq: $id } }) {
       id
       title
+      translations(where: { language: { eq: "ko" } }) {
+        language
+        field
+        text
+      }
       startDate
       duration
       sortKey
       participants {
         id
         name
+        translations(where: { language: { eq: "ko" } }) {
+          language
+          field
+          text
+        }
         slug
       }
       occurredIn {
         id
         name
+        translations(where: { language: { eq: "ko" } }) {
+          language
+          field
+          text
+        }
         slug
         latitude
         longitude
@@ -327,12 +531,21 @@ export const GET_EVENT_DETAIL = gql`
       verses {
         id
         verseText
+        translations(where: { language: { eq: "ko" } }) {
+          language
+          field
+          text
+        }
         verseNum
         chapter {
           chapterNum
           book {
             shortName
-            bookNameKr
+            translations(where: { language: { eq: "ko" } }) {
+              language
+              field
+              text
+            }
             slug
           }
         }
@@ -340,15 +553,24 @@ export const GET_EVENT_DETAIL = gql`
       precedes {
         id
         title
+        translations(where: { language: { eq: "ko" } }) {
+          language
+          field
+          text
+        }
       }
       follows {
         id
         title
+        translations(where: { language: { eq: "ko" } }) {
+          language
+          field
+          text
+        }
       }
     }
   }
 `;
-
 /**
  * Query to get book metadata for navigation
  * Returns a single book with its chapter count
@@ -358,9 +580,17 @@ export const GET_BOOK_METADATA = gql`
     books(where: { slug: { eq: $slug } }) {
       id
       title
-      bookNameKr
+      translations(where: { language: { eq: "ko" } }) {
+        language
+        field
+        text
+      }
       shortName
-      shortNameKr
+      translations(where: { language: { eq: "ko" } }) {
+        language
+        field
+        text
+      }
       slug
       chaptersConnection {
         totalCount
@@ -368,7 +598,6 @@ export const GET_BOOK_METADATA = gql`
     }
   }
 `;
-
 /**
  * Query to get all timeline events for visualization
  * Includes all relationships needed for network graph
@@ -378,30 +607,58 @@ export const GET_ALL_TIMELINE_EVENTS = gql`
     events {
       id
       title
+      translations(where: { language: { eq: "ko" } }) {
+        language
+        field
+        text
+      }
       startDate
       duration
       sortKey
       participants {
         id
         name
+        translations(where: { language: { eq: "ko" } }) {
+          language
+          field
+          text
+        }
         slug
         gender
       }
       occurredIn {
         id
         name
+        translations(where: { language: { eq: "ko" } }) {
+          language
+          field
+          text
+        }
         slug
       }
       verses {
         verseText
+        translations(where: { language: { eq: "ko" } }) {
+          language
+          field
+          text
+        }
         mdText
-        mdTextKr
+        translations(where: { language: { eq: "ko" } }) {
+          language
+          field
+          text
+        }
         verseNum
         chapter {
           chapterNum
           book {
             shortName
-            bookNameKr
+            translations(where: { language: { eq: "ko" } }) {
+              language
+              field
+              text
+            }
             slug
           }
         }
@@ -409,15 +666,24 @@ export const GET_ALL_TIMELINE_EVENTS = gql`
       precedes {
         id
         title
+        translations(where: { language: { eq: "ko" } }) {
+          language
+          field
+          text
+        }
       }
       follows {
         id
         title
+        translations(where: { language: { eq: "ko" } }) {
+          language
+          field
+          text
+        }
       }
     }
   }
 `;
-
 /**
  * Query to get all books with chapter counts
  * Used for Jump to Book/Chapter navigation
@@ -427,14 +693,17 @@ export const BOOKS_WITH_COUNTS = gql`
     books(sort: [{ bookOrder: ASC }]) {
       slug
       title
-      bookNameKr
+      translations(where: { language: { eq: "ko" } }) {
+        language
+        field
+        text
+      }
       chaptersConnection {
         totalCount
       }
     }
   }
 `;
-
 export const PERSON_PANEL_QUERY = gql`
   query PersonPanel($slug: String!, $first: Int = 10, $after: String) {
     people(where: { slug: { eq: $slug } }) {
@@ -443,6 +712,11 @@ export const PERSON_PANEL_QUERY = gql`
       slug
       gender
       title
+      translations(where: { language: { eq: "ko" } }) {
+        language
+        field
+        text
+      }
       description
       versesConnection(first: $first, after: $after, sort: [{ node: { verseNum: ASC } }]) {
         totalCount
@@ -455,15 +729,28 @@ export const PERSON_PANEL_QUERY = gql`
             id
             verseNum
             verseText
+            translations(where: { language: { eq: "ko" } }) {
+              language
+              field
+              text
+            }
             mdText
-            mdTextKr
+            translations(where: { language: { eq: "ko" } }) {
+              language
+              field
+              text
+            }
             chapter {
               id
               chapterNum
               book {
                 id
                 title
-                bookNameKr
+                translations(where: { language: { eq: "ko" } }) {
+                  language
+                  field
+                  text
+                }
                 slug
               }
             }
@@ -473,12 +760,16 @@ export const PERSON_PANEL_QUERY = gql`
     }
   }
 `;
-
 export const PLACE_PANEL_QUERY = gql`
   query PlacePanel($slug: String!, $first: Int = 10, $after: String) {
     places(where: { slug: { eq: $slug } }) {
       id
       name
+      translations(where: { language: { eq: "ko" } }) {
+        language
+        field
+        text
+      }
       slug
       featureType
       latitude
@@ -495,15 +786,28 @@ export const PLACE_PANEL_QUERY = gql`
             id
             verseNum
             verseText
+            translations(where: { language: { eq: "ko" } }) {
+              language
+              field
+              text
+            }
             mdText
-            mdTextKr
+            translations(where: { language: { eq: "ko" } }) {
+              language
+              field
+              text
+            }
             chapter {
               id
               chapterNum
               book {
                 id
                 title
-                bookNameKr
+                translations(where: { language: { eq: "ko" } }) {
+                  language
+                  field
+                  text
+                }
                 slug
               }
             }
@@ -513,12 +817,16 @@ export const PLACE_PANEL_QUERY = gql`
     }
   }
 `;
-
 export const EVENT_PANEL_QUERY = gql`
   query EventPanel($id: ID!, $first: Int = 10, $after: String) {
     events(where: { id: { eq: $id } }) {
       id
       title
+      translations(where: { language: { eq: "ko" } }) {
+        language
+        field
+        text
+      }
       startDate
       versesConnection(first: $first, after: $after, sort: [{ node: { verseNum: ASC } }]) {
         totalCount
@@ -531,15 +839,28 @@ export const EVENT_PANEL_QUERY = gql`
             id
             verseNum
             verseText
+            translations(where: { language: { eq: "ko" } }) {
+              language
+              field
+              text
+            }
             mdText
-            mdTextKr
+            translations(where: { language: { eq: "ko" } }) {
+              language
+              field
+              text
+            }
             chapter {
               id
               chapterNum
               book {
                 id
                 title
-                bookNameKr
+                translations(where: { language: { eq: "ko" } }) {
+                  language
+                  field
+                  text
+                }
                 slug
               }
             }
@@ -549,7 +870,6 @@ export const EVENT_PANEL_QUERY = gql`
     }
   }
 `;
-
 export const PERSON_VERSES_QUERY = gql`
   query PersonVerses($slug: String!, $first: Int = 500, $after: String) {
     people(where: { slug: { eq: $slug } }) {
@@ -565,15 +885,28 @@ export const PERSON_VERSES_QUERY = gql`
             id
             verseNum
             verseText
+            translations(where: { language: { eq: "ko" } }) {
+              language
+              field
+              text
+            }
             mdText
-            mdTextKr
+            translations(where: { language: { eq: "ko" } }) {
+              language
+              field
+              text
+            }
             chapter {
               id
               chapterNum
               book {
                 id
                 title
-                bookNameKr
+                translations(where: { language: { eq: "ko" } }) {
+                  language
+                  field
+                  text
+                }
                 slug
                 bookOrder
               }
@@ -583,6 +916,11 @@ export const PERSON_VERSES_QUERY = gql`
                 node {
                   slug
                   name
+                  translations(where: { language: { eq: "ko" } }) {
+                    language
+                    field
+                    text
+                  }
                 }
               }
             }
@@ -591,6 +929,11 @@ export const PERSON_VERSES_QUERY = gql`
                 node {
                   slug
                   name
+                  translations(where: { language: { eq: "ko" } }) {
+                    language
+                    field
+                    text
+                  }
                 }
               }
             }
@@ -599,6 +942,11 @@ export const PERSON_VERSES_QUERY = gql`
                 node {
                   id
                   title
+                  translations(where: { language: { eq: "ko" } }) {
+                    language
+                    field
+                    text
+                  }
                 }
               }
             }
@@ -608,7 +956,6 @@ export const PERSON_VERSES_QUERY = gql`
     }
   }
 `;
-
 export const PLACE_VERSES_QUERY = gql`
   query PlaceVerses($slug: String!, $first: Int = 500, $after: String) {
     places(where: { slug: { eq: $slug } }) {
@@ -624,15 +971,28 @@ export const PLACE_VERSES_QUERY = gql`
             id
             verseNum
             verseText
+            translations(where: { language: { eq: "ko" } }) {
+              language
+              field
+              text
+            }
             mdText
-            mdTextKr
+            translations(where: { language: { eq: "ko" } }) {
+              language
+              field
+              text
+            }
             chapter {
               id
               chapterNum
               book {
                 id
                 title
-                bookNameKr
+                translations(where: { language: { eq: "ko" } }) {
+                  language
+                  field
+                  text
+                }
                 slug
                 bookOrder
               }
@@ -642,6 +1002,11 @@ export const PLACE_VERSES_QUERY = gql`
                 node {
                   slug
                   name
+                  translations(where: { language: { eq: "ko" } }) {
+                    language
+                    field
+                    text
+                  }
                 }
               }
             }
@@ -650,6 +1015,11 @@ export const PLACE_VERSES_QUERY = gql`
                 node {
                   slug
                   name
+                  translations(where: { language: { eq: "ko" } }) {
+                    language
+                    field
+                    text
+                  }
                 }
               }
             }
@@ -658,6 +1028,11 @@ export const PLACE_VERSES_QUERY = gql`
                 node {
                   id
                   title
+                  translations(where: { language: { eq: "ko" } }) {
+                    language
+                    field
+                    text
+                  }
                 }
               }
             }
@@ -667,7 +1042,6 @@ export const PLACE_VERSES_QUERY = gql`
     }
   }
 `;
-
 export const EVENT_VERSES_QUERY = gql`
   query EventVerses($id: ID!, $first: Int = 500, $after: String) {
     events(where: { id: { eq: $id } }) {
@@ -683,15 +1057,28 @@ export const EVENT_VERSES_QUERY = gql`
             id
             verseNum
             verseText
+            translations(where: { language: { eq: "ko" } }) {
+              language
+              field
+              text
+            }
             mdText
-            mdTextKr
+            translations(where: { language: { eq: "ko" } }) {
+              language
+              field
+              text
+            }
             chapter {
               id
               chapterNum
               book {
                 id
                 title
-                bookNameKr
+                translations(where: { language: { eq: "ko" } }) {
+                  language
+                  field
+                  text
+                }
                 slug
                 bookOrder
               }
@@ -701,6 +1088,11 @@ export const EVENT_VERSES_QUERY = gql`
                 node {
                   slug
                   name
+                  translations(where: { language: { eq: "ko" } }) {
+                    language
+                    field
+                    text
+                  }
                 }
               }
             }
@@ -709,6 +1101,11 @@ export const EVENT_VERSES_QUERY = gql`
                 node {
                   slug
                   name
+                  translations(where: { language: { eq: "ko" } }) {
+                    language
+                    field
+                    text
+                  }
                 }
               }
             }
@@ -717,6 +1114,11 @@ export const EVENT_VERSES_QUERY = gql`
                 node {
                   id
                   title
+                  translations(where: { language: { eq: "ko" } }) {
+                    language
+                    field
+                    text
+                  }
                 }
               }
             }
@@ -726,7 +1128,6 @@ export const EVENT_VERSES_QUERY = gql`
     }
   }
 `;
-
 /**
  * Query to get today's daily reading for the home page
  * Uses Neo4j Date scalar which expects YYYY-MM-DD format
@@ -749,17 +1150,33 @@ export const GET_DAILY_READING = gql`
               id
               slug
               title
-              bookNameKr
+              translations(where: { language: { eq: "ko" } }) {
+                language
+                field
+                text
+              }
               shortName
-              shortNameKr
+              translations(where: { language: { eq: "ko" } }) {
+                language
+                field
+                text
+              }
               bookOrder
               testament {
                 title
-                titleKr
+                translations(where: { language: { eq: "ko" } }) {
+                  language
+                  field
+                  text
+                }
               }
               division {
                 title
-                titleKr
+                translations(where: { language: { eq: "ko" } }) {
+                  language
+                  field
+                  text
+                }
               }
             }
           }
@@ -768,7 +1185,6 @@ export const GET_DAILY_READING = gql`
     }
   }
 `;
-
 /**
  * Query to fetch family tree data for a person
  * Fetches parents, partners, and children with bilingual support
@@ -780,6 +1196,11 @@ export const GET_PERSON_FAMILY_TREE = gql`
       id
       slug
       name
+      translations(where: { language: { eq: "ko" } }) {
+        language
+        field
+        text
+      }
       gender
       birthYear
       deathYear
@@ -789,6 +1210,11 @@ export const GET_PERSON_FAMILY_TREE = gql`
             id
             slug
             name
+            translations(where: { language: { eq: "ko" } }) {
+              language
+              field
+              text
+            }
             gender
             birthYear
             deathYear
@@ -801,6 +1227,11 @@ export const GET_PERSON_FAMILY_TREE = gql`
             id
             slug
             name
+            translations(where: { language: { eq: "ko" } }) {
+              language
+              field
+              text
+            }
             gender
             birthYear
             deathYear
@@ -813,6 +1244,11 @@ export const GET_PERSON_FAMILY_TREE = gql`
             id
             slug
             name
+            translations(where: { language: { eq: "ko" } }) {
+              language
+              field
+              text
+            }
             gender
             birthYear
             deathYear

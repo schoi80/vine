@@ -97,7 +97,7 @@ export function TimelineEventBox({
         </span>
 
         <span
-          className={`block pt-4 font-medium ${compact ? 'text-sm' : 'text-base'} text-left ${
+          className={`block pt-4 font-medium ${compact ? 'text-sm' : 'text-base'} font-song-myung text-left ${
             yearPosition === 'left' ? 'sm:text-left' : 'sm:text-right'
           }`}
           style={{ color: textColor }}

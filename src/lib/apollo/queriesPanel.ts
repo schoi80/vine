@@ -10,6 +10,11 @@ export const PLACE_EVENTS_CHIPS = gql`
           node {
             id
             title
+            translations(where: { language: { eq: "ko" } }) {
+              language
+              field
+              text
+            }
             startDate
             duration
             sortKey
@@ -31,6 +36,11 @@ export const PLACE_PEOPLE_BORN_CHIPS = gql`
             id
             slug
             name
+            translations(where: { language: { eq: "ko" } }) {
+              language
+              field
+              text
+            }
             birthYear
           }
         }
@@ -50,6 +60,11 @@ export const PLACE_PEOPLE_DIED_CHIPS = gql`
             id
             slug
             name
+            translations(where: { language: { eq: "ko" } }) {
+              language
+              field
+              text
+            }
             deathYear
           }
         }
@@ -63,9 +78,19 @@ export const PERSON_KEY_INFO = gql`
     people(where: { slug: { eq: $slug } }) {
       id
       name
+      translations(where: { language: { eq: "ko" } }) {
+        language
+        field
+        text
+      }
       slug
       alsoCalled
       title
+      translations(where: { language: { eq: "ko" } }) {
+        language
+        field
+        text
+      }
       gender
       description
       status
@@ -77,6 +102,11 @@ export const PERSON_KEY_INFO = gql`
             id
             slug
             name
+            translations(where: { language: { eq: "ko" } }) {
+              language
+              field
+              text
+            }
             latitude
             longitude
           }
@@ -88,6 +118,11 @@ export const PERSON_KEY_INFO = gql`
             id
             slug
             name
+            translations(where: { language: { eq: "ko" } }) {
+              language
+              field
+              text
+            }
             latitude
             longitude
           }
@@ -98,6 +133,11 @@ export const PERSON_KEY_INFO = gql`
           node {
             id
             name
+            translations(where: { language: { eq: "ko" } }) {
+              language
+              field
+              text
+            }
           }
         }
       }
@@ -116,6 +156,11 @@ export const PERSON_FAMILY_CHIPS = gql`
             id
             slug
             name
+            translations(where: { language: { eq: "ko" } }) {
+              language
+              field
+              text
+            }
             birthYear
             deathYear
           }
@@ -128,6 +173,11 @@ export const PERSON_FAMILY_CHIPS = gql`
             id
             slug
             name
+            translations(where: { language: { eq: "ko" } }) {
+              language
+              field
+              text
+            }
             birthYear
             deathYear
           }
@@ -140,6 +190,11 @@ export const PERSON_FAMILY_CHIPS = gql`
             id
             slug
             name
+            translations(where: { language: { eq: "ko" } }) {
+              language
+              field
+              text
+            }
           }
         }
       }
@@ -157,6 +212,11 @@ export const PERSON_PARTICIPATION_CHIPS = gql`
           node {
             id
             title
+            translations(where: { language: { eq: "ko" } }) {
+              language
+              field
+              text
+            }
             startDate
             duration
             sortKey
@@ -180,7 +240,11 @@ export const PERSON_AUTHORSHIP_CHIPS = gql`
               id
               slug
               title
-              bookNameKr
+              translations(where: { language: { eq: "ko" } }) {
+                language
+                field
+                text
+              }
             }
           }
         }
@@ -194,6 +258,11 @@ export const EVENT_PLACES_CHIPS = gql`
     events(where: { id: { eq: $id } }) {
       id
       title
+      translations(where: { language: { eq: "ko" } }) {
+        language
+        field
+        text
+      }
       startDate
       duration
       sortKey
@@ -204,6 +273,11 @@ export const EVENT_PLACES_CHIPS = gql`
             id
             slug
             name
+            translations(where: { language: { eq: "ko" } }) {
+              language
+              field
+              text
+            }
             latitude
             longitude
           }
@@ -224,6 +298,11 @@ export const EVENT_PARTICIPANTS_CHIPS = gql`
             id
             slug
             name
+            translations(where: { language: { eq: "ko" } }) {
+              language
+              field
+              text
+            }
             birthYear
             deathYear
           }
@@ -243,6 +322,11 @@ export const EVENT_TIMELINE_CHIPS = gql`
           node {
             id
             title
+            translations(where: { language: { eq: "ko" } }) {
+              language
+              field
+              text
+            }
           }
           properties {
             lagType
@@ -256,6 +340,11 @@ export const EVENT_TIMELINE_CHIPS = gql`
           node {
             id
             title
+            translations(where: { language: { eq: "ko" } }) {
+              language
+              field
+              text
+            }
           }
           properties {
             lagType

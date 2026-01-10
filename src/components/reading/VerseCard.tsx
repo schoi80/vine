@@ -5,35 +5,10 @@ import { EntityType } from '@/lib/utils/parseEntityMentions';
 import { useState, memo } from 'react';
 import { useEntityPanel } from '@/lib/contexts/EntityPanelContext';
 import { VerseCardView } from './VerseCardView';
+import { getLocalizedValue, getLocalizedTitle } from '@/lib/utils/bilingual';
 
 interface VerseCardProps {
-  verse: {
-    id: string;
-    verseNum: number;
-    verseText: string;
-    mdText: string;
-    mdTextKr: string;
-    mentionsPeople: Array<{
-      id: string;
-      slug: string;
-      name: string;
-      title?: string;
-      gender?: string;
-    }>;
-    mentionsPlaces: Array<{
-      id: string;
-      slug: string;
-      name: string;
-      latitude?: number;
-      longitude?: number;
-      featureType?: string;
-    }>;
-    describesEvents: Array<{
-      id: string;
-      title: string;
-      startDate?: number;
-    }>;
-  };
+  verse: any;
   language: Language;
   showDualLanguage?: boolean;
   compact?: boolean;
@@ -43,10 +18,6 @@ interface VerseCardProps {
 
 /**
  * VerseCard - Container component for displaying a verse with interactive entity mentions
- *
- * This is the Container in the Container/View pattern.
- * Handles state management (hover), context (entity panel), and data transformation.
- * Delegates pure presentation to VerseCardView.
  */
 const VerseCard = memo(function VerseCard({
   verse,
@@ -59,30 +30,32 @@ const VerseCard = memo(function VerseCard({
   const [hoveredEntity, setHoveredEntity] = useState<string | null>(null);
   const { open } = useEntityPanel();
 
-  const text =
-    language === 'en' ? verse.mdText || verse.verseText : verse.mdTextKr || verse.verseText;
+  const text = getLocalizedValue(verse, 'mdText', verse.mdText || verse.verseText, language);
 
   const secondaryText = showDualLanguage
-    ? language === 'en'
-      ? verse.mdTextKr || verse.verseText
-      : verse.mdText || verse.verseText
+    ? getLocalizedValue(
+        verse,
+        'mdText',
+        verse.mdText || verse.verseText,
+        language === 'en' ? 'ko' : 'en'
+      )
     : undefined;
 
   const entities = [
-    ...verse.mentionsPeople.map(p => ({
+    ...(verse.mentionsPeople || []).map((p: any) => ({
       type: 'person' as EntityType,
       slug: p.slug,
       label: p.name,
     })),
-    ...verse.mentionsPlaces.map(p => ({
+    ...(verse.mentionsPlaces || []).map((p: any) => ({
       type: 'place' as EntityType,
       slug: p.slug,
       label: p.name,
     })),
-    ...verse.describesEvents.map(e => ({
+    ...(verse.describesEvents || []).map((e: any) => ({
       type: 'event' as EntityType,
       slug: e.id,
-      label: e.title,
+      label: getLocalizedTitle(e, language),
     })),
   ];
 

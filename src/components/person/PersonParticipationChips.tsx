@@ -7,6 +7,7 @@ import { useUIConfig } from '@/lib/config/uiConfig';
 import { TagList, type TagItem } from '@/components/shared/TagList';
 import { useLanguage } from '@/lib/contexts/LanguageContext';
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
+import { getLocalizedTitle } from '@/lib/utils/bilingual';
 
 interface PersonParticipationChipsProps {
   slug: string;
@@ -14,7 +15,7 @@ interface PersonParticipationChipsProps {
 
 export function PersonParticipationChips({ slug }: PersonParticipationChipsProps) {
   const config = useUIConfig();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
 
   const { data, loading } = useQuery(PERSON_PARTICIPATION_CHIPS, {
     variables: {
@@ -45,7 +46,7 @@ export function PersonParticipationChips({ slug }: PersonParticipationChipsProps
 
   const items: TagItem[] =
     person.participatedInConnection?.edges?.map(({ node }: any) => ({
-      label: node.title,
+      label: getLocalizedTitle(node, language),
       color: 'event' as const,
       entity: { kind: 'event' as const, id: node.id },
     })) ?? [];

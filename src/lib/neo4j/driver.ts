@@ -2,7 +2,7 @@ import neo4j, { Driver } from 'neo4j-driver';
 
 const uri = process.env.NEO4J_URI || 'neo4j://localhost:7687';
 const user = process.env.NEO4J_USERNAME || 'neo4j';
-const password = process.env.NEO4J_PASSWORD || 'neo4j';
+const password = process.env.NEO4J_PASSWORD || 'hellobible';
 
 /**
  * Global is used here to maintain a cached connection across hot reloads

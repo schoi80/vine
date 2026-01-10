@@ -9,6 +9,7 @@ Comprehensive UX redesign for Bible Graph application with editorial elegance, c
 **Full specification:** `/DESIGN_TOKENS.md`
 
 ### Key Design Principles
+
 - **Visual tone**: Slightly expressive (editorial elegance with subtle details)
 - **Theme**: Light/dark mode via CSS variables
 - **Typography**: Open-source self-hosted fonts
@@ -17,11 +18,13 @@ Comprehensive UX redesign for Bible Graph application with editorial elegance, c
 - **Focus**: Enhanced reading with inline exploration
 
 ### Color System
+
 - **Neutral scale**: 12-step scale (neutral-1 to neutral-12)
 - **Entity accents**: Person (blue), Place (green), Event (purple)
 - **Semantic colors**: Action, error, success, warning
 
 ### Typography
+
 - **Verse text (EN)**: Source Serif 4 Variable (optical sizing)
 - **Verse text (KR)**: Noto Serif KR
 - **UI text (EN)**: IBM Plex Sans Variable
@@ -32,9 +35,11 @@ Comprehensive UX redesign for Bible Graph application with editorial elegance, c
 ### Atoms (`components/ui/`)
 
 #### Icon (`Icon.tsx`)
+
 Lucide icon wrapper with entity mapping and accessibility.
 
 **Props:**
+
 ```typescript
 {
   icon?: LucideIcon          // Lucide component
@@ -49,6 +54,7 @@ Lucide icon wrapper with entity mapping and accessibility.
 ```
 
 **Usage:**
+
 ```tsx
 <Icon icon={Users} size="sm" aria-label="Person" />
 <Icon entityType="person" size="md" />
@@ -56,9 +62,11 @@ Lucide icon wrapper with entity mapping and accessibility.
 ```
 
 #### Button (`Button.tsx`)
+
 Compact button with variants and loading state.
 
 **Props:**
+
 ```typescript
 {
   variant?: 'primary'|'subtle'|'ghost'|'danger' // Default: subtle
@@ -71,15 +79,18 @@ Compact button with variants and loading state.
 ```
 
 **Usage:**
+
 ```tsx
 <Button variant="primary">Save</Button>
 <Button variant="ghost" iconOnly><Icon icon={X} /></Button>
 ```
 
 #### Badge (`Badge.tsx`)
+
 Entity-typed badge with frequency indicators.
 
 **Props:**
+
 ```typescript
 {
   type: EntityType           // person|place|event
@@ -95,15 +106,18 @@ Entity-typed badge with frequency indicators.
 ```
 
 **Usage:**
+
 ```tsx
 <Badge type="person" label="Moses" variant="subtle" />
 <Badge type="place" label="Jerusalem" labelKr="예루살렘" frequency={5} interactive />
 ```
 
 #### EntityTagList (`Badge.tsx`)
+
 Collapsible list of entity badges with "+N more" overflow.
 
 **Props:**
+
 ```typescript
 {
   entities: Array<{
@@ -121,9 +135,11 @@ Collapsible list of entity badges with "+N more" overflow.
 ```
 
 #### VerseNumber (`VerseNumber.tsx`)
+
 Stylized verse number with small caps and tabular numerals.
 
 **Props:**
+
 ```typescript
 {
   number: number
@@ -134,9 +150,11 @@ Stylized verse number with small caps and tabular numerals.
 ```
 
 #### Tooltip (`Tooltip.tsx`)
+
 Accessible tooltip with Radix UI.
 
 **Props:**
+
 ```typescript
 {
   children: ReactElement     // Trigger element
@@ -149,16 +167,21 @@ Accessible tooltip with Radix UI.
 ```
 
 **Usage:**
+
 ```tsx
-<Tooltip content="Copy verse"><Button>...</Button></Tooltip>
+<Tooltip content="Copy verse">
+  <Button>...</Button>
+</Tooltip>
 ```
 
 ### Molecules (`components/reading/`)
 
 #### VerseCard
+
 Enhanced verse display with inline entity mentions and optional dual-language.
 
 **Features:**
+
 - Sticky verse number
 - Entity mentions as colored inline links
 - Optional dual-language display (side-by-side or stacked)
@@ -166,6 +189,7 @@ Enhanced verse display with inline entity mentions and optional dual-language.
 - Compact mode
 
 **Props:**
+
 ```typescript
 {
   verse: {
@@ -187,9 +211,11 @@ Enhanced verse display with inline entity mentions and optional dual-language.
 ### Organisms (`components/reading/`)
 
 #### ChapterView
+
 Main reading interface with filtering and dual-language toggle.
 
 **Features:**
+
 - Filter by entity type (person/place/event)
 - Dual-language toggle
 - Entity frequency counts
@@ -197,6 +223,7 @@ Main reading interface with filtering and dual-language toggle.
 - Verse count indicator
 
 **Props:**
+
 ```typescript
 {
   verses: Verse[]
@@ -205,15 +232,18 @@ Main reading interface with filtering and dual-language toggle.
 ```
 
 **Interactive controls:**
+
 - Filter button → Toggle filter panel
 - Dual button → Switch single/dual language
 - Entity badges → Filter by type
 - Clear filter → Reset to all verses
 
 #### EntityPanel
+
 Side drawer for entity details.
 
 **Features:**
+
 - Entity icon and name (with Korean)
 - Entity type badge
 - Summary text
@@ -222,6 +252,7 @@ Side drawer for entity details.
 - Escape key to close
 
 **Props:**
+
 ```typescript
 {
   open: boolean
@@ -241,9 +272,11 @@ Side drawer for entity details.
 ```
 
 #### MentionsBrowser
+
 Modal overlay for browsing all chapter mentions.
 
 **Features:**
+
 - Search entities by name
 - Filter by entity type
 - Grouped by type with counts
@@ -252,6 +285,7 @@ Modal overlay for browsing all chapter mentions.
 - Shows entity occurrence count
 
 **Props:**
+
 ```typescript
 {
   open: boolean
@@ -271,9 +305,11 @@ Modal overlay for browsing all chapter mentions.
 ### Layout (`components/layout/`)
 
 #### Header
+
 Updated with compact density and new design tokens.
 
 **Changes:**
+
 - Height: 64px → 56px (h-16 → h-14)
 - Nav links: text-sm
 - Language toggle: compact pill with rounded-full
@@ -283,6 +319,7 @@ Updated with compact density and new design tokens.
 ## Theme Implementation
 
 ### CSS Variables Structure
+
 ```css
 :root {
   /* Neutral scale */
@@ -296,7 +333,7 @@ Updated with compact density and new design tokens.
   /* ...place, event... */
 }
 
-[data-theme="dark"] {
+[data-theme='dark'] {
   --color-neutral-1: #111113;
   --color-neutral-12: #fcfcfd;
   /* ...inverted + adjusted... */
@@ -304,6 +341,7 @@ Updated with compact density and new design tokens.
 ```
 
 ### Z-Index Scale
+
 ```
 base: 0
 sticky: 100 (verse numbers)
@@ -316,6 +354,7 @@ toast: 800
 ```
 
 ### Motion Tokens
+
 ```
 --duration-motion-instant: 100ms
 --duration-motion-quick: 150ms
@@ -330,7 +369,9 @@ toast: 800
 ## Usage Guidelines
 
 ### Entity Color Consistency
+
 Always use entity color utilities:
+
 ```tsx
 // ✅ Correct
 <span className="text-accent-person dark:text-accent-person-dark">Moses</span>
@@ -340,17 +381,21 @@ Always use entity color utilities:
 ```
 
 ### Bilingual Text
+
 Always provide both languages where applicable:
+
 ```tsx
 <Badge
   type="place"
-  label="Jerusalem"   // Always English first
-  labelKr="예루살렘"   // Korean second
+  label="Jerusalem" // Always English first
+  labelKr="예루살렘" // Korean second
 />
 ```
 
 ### Compact Density
+
 Use 8px grid increments:
+
 ```tsx
 // ✅ Correct
 <div className="gap-2 p-4 mb-3"> // 8px, 16px, 12px
@@ -360,6 +405,7 @@ Use 8px grid increments:
 ```
 
 ### Accessibility
+
 - Always provide `aria-label` for non-decorative icons
 - Use `decorative` prop for purely visual icons
 - Ensure focus rings are visible
@@ -370,6 +416,7 @@ Use 8px grid increments:
 ### From Old to New Components
 
 **Badges:**
+
 ```tsx
 // Old
 <Link href={`/person/${slug}`} className="text-accent-person">
@@ -381,6 +428,7 @@ Use 8px grid increments:
 ```
 
 **Buttons:**
+
 ```tsx
 // Old
 <button className="px-3 py-2 bg-zinc-900 text-white rounded">
@@ -392,6 +440,7 @@ Use 8px grid increments:
 ```
 
 **VerseCard:**
+
 ```tsx
 // Old
 <VerseCard verse={verse} language={language} />
@@ -408,6 +457,7 @@ Use 8px grid increments:
 ## Files Changed
 
 ### Created
+
 - `/DESIGN_TOKENS.md` - Full design specification
 - `/frontend/lib/fonts.ts` - Font configuration
 - `/frontend/app/fonts/*.woff2` - Self-hosted fonts (7 files, 3.6MB)
@@ -420,6 +470,7 @@ Use 8px grid increments:
 - `/frontend/components/reading/MentionsBrowser.tsx` - Mentions overlay
 
 ### Modified
+
 - `/frontend/app/globals.css` - Complete design token system
 - `/frontend/app/layout.tsx` - Font loading
 - `/frontend/components/layout/Header.tsx` - Compact density
@@ -427,6 +478,7 @@ Use 8px grid increments:
 - `/frontend/components/reading/ChapterView.tsx` - Filters + dual language
 
 ### Dependencies Added
+
 - `lucide-react` - Icons
 - `@radix-ui/react-tooltip` - Accessible tooltips
 
@@ -439,6 +491,7 @@ Use 8px grid increments:
 ## Next Steps (Not Implemented)
 
 The following were planned but cancelled due to scope/time:
+
 - **Focus Mode**: Paper texture overlay, reduced chrome
 - **Micro-interactions**: Verse entrance animations, badge hover effects
 - **Keyboard navigation**: Arrow keys, shortcuts

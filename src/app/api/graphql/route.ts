@@ -10,7 +10,7 @@ const server = new ApolloServer({
 });
 
 const handler = startServerAndCreateNextHandler<NextRequest>(server, {
-  context: async (req) => ({ req }),
+  context: async req => ({ req }),
 });
 
 async function safeHandler(req: NextRequest) {

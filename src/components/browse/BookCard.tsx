@@ -3,7 +3,11 @@
 import Link from 'next/link';
 import { BookOpen } from 'lucide-react';
 import { useLanguage } from '@/lib/contexts/LanguageContext';
-import { getLocalizedBookName, getLocalizedShortName } from '@/lib/utils/bilingual';
+import {
+  getLocalizedBookName,
+  getLocalizedShortName,
+  getLocalizedTitle,
+} from '@/lib/utils/bilingual';
 import type { Book } from '@/app/browse/page';
 
 function divisionColorClass(title: string | undefined) {
@@ -41,11 +45,13 @@ export default function BookCard({ book }: { book: Book }) {
   const { t, language } = useLanguage();
 
   const primaryTitle = getLocalizedBookName(book, language);
-  const secondaryTitle = language === 'ko' ? book.title : book.bookNameKr;
+  const secondaryTitle = getLocalizedBookName(book, language === 'ko' ? 'en' : 'ko');
 
   const primaryShort = getLocalizedShortName(book, language);
-  const secondaryShort = language === 'ko' ? book.shortName : book.shortNameKr;
+  const secondaryShort = getLocalizedShortName(book, language === 'ko' ? 'en' : 'ko');
 
+  // For division label, we use the pre-localized field if translations are missing,
+  // but prefer the utility if book has division translations.
   const divisionLabel = language === 'ko' ? book.divisionTitleKr : book.divisionTitle;
 
   const ariaLabel = `${primaryTitle} · ${secondaryTitle}${
