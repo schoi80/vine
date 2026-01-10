@@ -13,7 +13,7 @@ export async function getSchema() {
   schemaPromise = (async () => {
     // In Next.js, we need to be careful with file paths in standalone mode
     // process.cwd() is the root of the project
-    const schemaPath = join(process.cwd(), 'lib/apollo/schema.graphql');
+    const schemaPath = join(process.cwd(), 'src/lib/apollo/schema.graphql');
     const typeDefs = readFileSync(schemaPath, 'utf-8');
 
     const neoSchema = new Neo4jGraphQL({

@@ -1,8 +1,8 @@
 import type { Preview } from '@storybook/nextjs-vite';
 import { withThemeByClassName } from '@storybook/addon-themes';
 import React from 'react';
-import { LanguageProvider } from '../lib/contexts/LanguageContext';
-import '../app/globals.css';
+import { LanguageProvider } from '../src/lib/contexts/LanguageContext';
+import '../src/app/globals.css';
 
 const preview: Preview = {
   parameters: {
