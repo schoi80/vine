@@ -1,0 +1,339 @@
+import type { Meta, StoryObj } from '@storybook/nextjs-vite';
+import { Chip } from './Chip';
+
+const meta = {
+  title: 'UI/Chip',
+  component: Chip,
+  tags: ['autodocs'],
+  parameters: {
+    docs: {
+      description: {
+        component:
+          'Unified chip component for displaying tags, entity mentions, and categorical information. Supports entity colors, counts, and interactive behavior.',
+      },
+    },
+  },
+  argTypes: {
+    color: {
+      control: 'select',
+      options: ['person', 'place', 'event', 'neutral'],
+      description: 'Chip color (entity type or neutral)',
+    },
+    size: {
+      control: 'select',
+      options: ['sm', 'md'],
+      description: 'Chip size',
+    },
+    interactive: {
+      control: 'boolean',
+      description: 'Enable hover/active states for clickable chips',
+    },
+    count: {
+      control: 'number',
+      description: 'Optional count badge',
+    },
+  },
+} satisfies Meta<typeof Chip>;
+
+export default meta;
+type Story =
+  | StoryObj<typeof meta>
+  | { render: () => React.ReactElement; parameters?: Record<string, any> };
+
+export const Default: Story = {
+  args: {
+    label: 'Default Chip',
+    color: 'neutral',
+    size: 'sm',
+  },
+};
+
+export const EntityColors: Story = {
+  parameters: {},
+  render: () => (
+    <div className="flex flex-col gap-6">
+      <div className="flex flex-wrap items-center gap-3">
+        <Chip label="Abraham" color="person" />
+        <Chip label="Jerusalem" color="place" />
+        <Chip label="Exodus" color="event" />
+        <Chip label="General Tag" color="neutral" />
+      </div>
+
+      <div className="text-neutral-11 dark:text-neutral-dark-11 border-neutral-6 dark:border-neutral-dark-6 bg-neutral-2 dark:bg-neutral-dark-2 rounded-lg border p-4 text-xs">
+        <strong>Entity colors:</strong> Chips automatically apply color scheme based on entity type
+        <ul className="mt-2 list-inside list-disc space-y-1">
+          <li className="text-accent-person dark:text-accent-person-dark">
+            person: Blue background with blue text
+          </li>
+          <li className="text-accent-place dark:text-accent-place-dark">
+            place: Green background with green text
+          </li>
+          <li className="text-accent-event dark:text-accent-event-dark">
+            event: Amber background with amber text
+          </li>
+          <li>neutral: Gray background for general tags</li>
+        </ul>
+      </div>
+    </div>
+  ),
+};
+
+export const Sizes: Story = {
+  parameters: {},
+  render: () => (
+    <div className="flex flex-col gap-4">
+      <div className="flex items-center gap-3">
+        <Chip label="Small Chip" color="person" size="sm" />
+        <Chip label="Medium Chip" color="person" size="md" />
+      </div>
+
+      <div className="flex items-center gap-3">
+        <Chip label="Jerusalem" color="place" size="sm" />
+        <Chip label="Jerusalem" color="place" size="md" />
+      </div>
+
+      <p className="text-neutral-11 dark:text-neutral-dark-11 text-xs">
+        sm: Compact for dense lists (default) | md: Larger for emphasis
+      </p>
+    </div>
+  ),
+};
+
+export const WithCounts: Story = {
+  parameters: {},
+  render: () => (
+    <div className="flex flex-col gap-4">
+      <div className="flex flex-wrap items-center gap-3">
+        <Chip label="Moses" color="person" count={156} />
+        <Chip label="Egypt" color="place" count={42} />
+        <Chip label="Passover" color="event" count={23} />
+        <Chip label="Law" color="neutral" count={8} />
+      </div>
+
+      <p className="text-neutral-11 dark:text-neutral-dark-11 text-xs">
+        Counts show frequency of entity mentions or co-occurrences
+      </p>
+    </div>
+  ),
+};
+
+export const Interactive: Story = {
+  args: {
+    color: 'place',
+    size: 'sm',
+  },
+
+  parameters: {},
+
+  render: () => (
+    <div className="flex flex-col gap-4">
+      <div className="flex flex-wrap items-center gap-3">
+        <Chip
+          label="David"
+          color="person"
+          count={45}
+          interactive
+          onClick={() => console.log('Chip clicked')}
+        />
+        <Chip
+          label="Bethlehem"
+          color="place"
+          count={12}
+          interactive
+          onClick={() => console.log('Chip clicked')}
+        />
+        <Chip
+          label="Anointing"
+          color="event"
+          count={7}
+          interactive
+          onClick={() => console.log('Chip clicked')}
+        />
+      </div>
+
+      <p className="text-neutral-11 dark:text-neutral-dark-11 text-xs">
+        Interactive chips have hover/active states and cursor pointer
+      </p>
+    </div>
+  ),
+};
+
+export const NonInteractive: Story = {
+  parameters: {},
+  render: () => (
+    <div className="flex flex-col gap-4">
+      <div className="flex flex-wrap items-center gap-3">
+        <Chip label="Read-only" color="person" interactive={false} />
+        <Chip label="No Click" color="place" count={5} interactive={false} />
+      </div>
+
+      <p className="text-neutral-11 dark:text-neutral-dark-11 text-xs">
+        Non-interactive chips (default) have no hover effects
+      </p>
+    </div>
+  ),
+};
+
+export const BilingualLabels: Story = {
+  parameters: {},
+  render: () => (
+    <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-3">
+        <div className="flex items-center gap-2">
+          <span className="text-neutral-11 dark:text-neutral-dark-11 w-16 text-xs">English:</span>
+          <div className="flex flex-wrap gap-2">
+            <Chip label="Abraham" color="person" count={175} />
+            <Chip label="Jerusalem" color="place" count={89} />
+            <Chip label="Creation" color="event" count={1} />
+          </div>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <span className="text-neutral-11 dark:text-neutral-dark-11 w-16 text-xs">Korean:</span>
+          <div className="flex flex-wrap gap-2">
+            <Chip label="아브라함" color="person" count={175} />
+            <Chip label="예루살렘" color="place" count={89} />
+            <Chip label="창조" color="event" count={1} />
+          </div>
+        </div>
+      </div>
+    </div>
+  ),
+};
+
+export const MixedChipGroup: Story = {
+  parameters: {},
+  render: () => (
+    <div className="flex flex-col gap-4">
+      <div className="flex flex-wrap gap-2">
+        <Chip
+          label="Moses"
+          color="person"
+          count={156}
+          interactive
+          onClick={() => console.log('Chip clicked')}
+        />
+        <Chip
+          label="Aaron"
+          color="person"
+          count={78}
+          interactive
+          onClick={() => console.log('Chip clicked')}
+        />
+        <Chip
+          label="Miriam"
+          color="person"
+          count={12}
+          interactive
+          onClick={() => console.log('Chip clicked')}
+        />
+        <Chip
+          label="Egypt"
+          color="place"
+          count={42}
+          interactive
+          onClick={() => console.log('Chip clicked')}
+        />
+        <Chip
+          label="Red Sea"
+          color="place"
+          count={8}
+          interactive
+          onClick={() => console.log('Chip clicked')}
+        />
+        <Chip
+          label="Exodus"
+          color="event"
+          count={23}
+          interactive
+          onClick={() => console.log('Chip clicked')}
+        />
+        <Chip
+          label="Passover"
+          color="event"
+          count={18}
+          interactive
+          onClick={() => console.log('Chip clicked')}
+        />
+        <Chip label="Law" color="neutral" count={34} />
+        <Chip label="Covenant" color="neutral" count={27} />
+      </div>
+
+      <p className="text-neutral-11 dark:text-neutral-dark-11 text-xs">
+        Mixed entity types with various counts (Exodus chapter context)
+      </p>
+    </div>
+  ),
+};
+
+export const AllVariantsCombined: Story = {
+  parameters: {},
+  render: () => (
+    <div className="flex flex-col gap-6">
+      <div>
+        <h4 className="mb-3 text-sm font-semibold">Small Non-Interactive</h4>
+        <div className="flex flex-wrap gap-2">
+          <Chip label="Person" color="person" size="sm" />
+          <Chip label="Place" color="place" size="sm" />
+          <Chip label="Event" color="event" size="sm" />
+          <Chip label="Neutral" color="neutral" size="sm" />
+        </div>
+      </div>
+
+      <div>
+        <h4 className="mb-3 text-sm font-semibold">Medium with Counts</h4>
+        <div className="flex flex-wrap gap-2">
+          <Chip label="Person" color="person" size="md" count={23} />
+          <Chip label="Place" color="place" size="md" count={8} />
+          <Chip label="Event" color="event" size="md" count={5} />
+          <Chip label="Neutral" color="neutral" size="md" count={12} />
+        </div>
+      </div>
+
+      <div>
+        <h4 className="mb-3 text-sm font-semibold">Interactive with Counts</h4>
+        <div className="flex flex-wrap gap-2">
+          <Chip
+            label="Person"
+            color="person"
+            count={23}
+            interactive
+            onClick={() => console.log('Chip clicked')}
+          />
+          <Chip
+            label="Place"
+            color="place"
+            count={8}
+            interactive
+            onClick={() => console.log('Chip clicked')}
+          />
+          <Chip
+            label="Event"
+            color="event"
+            count={5}
+            interactive
+            onClick={() => console.log('Chip clicked')}
+          />
+          <Chip
+            label="Neutral"
+            color="neutral"
+            count={12}
+            interactive
+            onClick={() => console.log('Chip clicked')}
+          />
+        </div>
+      </div>
+    </div>
+  ),
+};
+
+export const Playground: Story = {
+  args: {
+    label: 'Playground Chip',
+    color: 'person',
+    size: 'sm',
+    count: undefined,
+    interactive: false,
+    onClick: () => console.log('Chip clicked'),
+  },
+};

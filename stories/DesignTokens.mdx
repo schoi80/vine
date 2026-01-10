@@ -1,0 +1,126 @@
+# Design Tokens
+
+This page documents the design tokens used throughout the Bible Companion application.
+
+## Color System
+
+### Entity Colors
+
+The application uses color-coded entity types:
+
+- **Person**: Blue (`--color-accent-person: #3b82f6`)
+- **Place**: Green (`--color-accent-place: #10b981`)
+- **Event**: Amber (`--color-accent-event: #f59e0b`)
+
+Each entity color has variants for:
+
+- Background (`-bg`, `-dark-bg`)
+- Text (`-text`, `-dark-text`)
+- Border (`-border`, `-dark-border`)
+
+### Neutral Colors
+
+The neutral color scale from `neutral-1` (lightest) to `neutral-12` (darkest) provides semantic color usage:
+
+- Surface colors: `neutral-1` to `neutral-4`
+- Border colors: `neutral-6`, `neutral-7`
+- Text colors: `neutral-11` (secondary), `neutral-12` (primary)
+
+Each neutral has a dark mode variant (`neutral-dark-*`).
+
+## Typography
+
+### UI Fonts
+
+- **Sans-serif**: Inter (system font stack)
+- **Korean UI**: Noto Sans KR
+
+### Content Fonts
+
+- **English verses**: Charter, Georgia (serif)
+- **Korean verses**: Noto Serif KR
+- **Verse class**: `.text-verse` for consistent verse styling
+
+### Font Families Available
+
+```css
+font-inter
+font-noto-sans-kr
+font-source-serif
+font-noto-serif-kr
+font-song-myung
+```
+
+## Spacing
+
+Tailwind v4 provides a consistent spacing scale based on `rem` units:
+
+- `1` = 0.25rem (4px)
+- `2` = 0.5rem (8px)
+- `4` = 1rem (16px)
+- `6` = 1.5rem (24px)
+- `8` = 2rem (32px)
+
+Common component spacing:
+
+- Card padding: `px-4 py-3`
+- Section gaps: `space-y-4`
+- Chip gaps: `gap-2`
+
+## Border Radius
+
+- **Small** (chips, badges): `rounded-md` (0.375rem)
+- **Medium** (cards, buttons): `rounded-lg` (0.5rem)
+- **Full** (circles): `rounded-full`
+
+## Shadows
+
+- **Hover state**: `hover:shadow-sm`
+- **Active elements**: `shadow-lg`
+
+## Z-Index Layers
+
+- **Overlay**: `z-overlay` (backdrop/mask)
+- **Drawer**: `z-drawer` (side panels)
+- **Modal**: Higher z-index for modals
+
+## Usage Examples
+
+### Entity Badge
+
+```tsx
+<Badge type="person" label="Abraham" />
+<Badge type="place" label="Jerusalem" />
+<Badge type="event" label="Creation" />
+```
+
+### Neutral Colors
+
+```tsx
+// Background
+<div className="bg-neutral-2 dark:bg-neutral-dark-2">
+
+// Text
+<p className="text-neutral-12 dark:text-neutral-dark-12">
+```
+
+### Typography
+
+```tsx
+// Verse text
+<p className="font-source-serif text-verse">
+
+// Korean verse
+<p className="font-noto-serif-kr">
+
+// UI text
+<span className="font-inter">
+```
+
+## Accessibility
+
+All color combinations maintain WCAG AA contrast ratios:
+
+- Text on backgrounds: minimum 4.5:1
+- Interactive elements: clear focus states
+- Entity colors tested for colorblind users
