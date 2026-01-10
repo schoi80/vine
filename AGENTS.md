@@ -42,7 +42,7 @@ Bilingual (English/Korean) Bible Graph Explorer. Rich scripture context via rela
 - `make dev`: Start dev server (Port 8080)
 - `make quality`: Run format, lint, and typecheck
 - `make storybook`: Start UI design environment (Port 6006)
-- `make install`: Install dependencies with `--legacy-peer-deps`
+- `make install`: Install dependencies
 
 ## TESTING
 

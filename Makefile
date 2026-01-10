@@ -4,7 +4,7 @@
 
 install:
 	@echo "Installing dependencies..."
-	npm install --legacy-peer-deps
+	npm install
 
 dev: install
 	@echo "Starting development server..."
