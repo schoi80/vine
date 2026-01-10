@@ -1,4 +1,6 @@
-export interface PersonNode {
+import { Translation, Translatable } from '@/lib/types/hierarchy';
+
+export interface PersonNode extends Translatable {
   id: string;
   slug: string;
   name: string;
@@ -19,6 +21,7 @@ export interface GraphQLPersonResponse {
     id: string;
     slug: string;
     name: string;
+    translations?: Translation[];
     gender?: string;
     birthYear?: number;
     deathYear?: number;
@@ -52,6 +55,7 @@ export function transformToFamilyTree(data: GraphQLPersonResponse): FamilyTreeDa
       id: person.id,
       slug: person.slug,
       name: person.name,
+      translations: person.translations,
       gender: person.gender,
       birthYear: person.birthYear,
       deathYear: person.deathYear,

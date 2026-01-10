@@ -1,4 +1,4 @@
-import type { Translation, EraConfig, EventEra } from '../types/timeline';
+import type { EraConfig, EventEra } from '../types/timeline';
 
 /**
  * Configuration for biblical eras/periods

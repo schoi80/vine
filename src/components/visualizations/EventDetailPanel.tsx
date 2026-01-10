@@ -14,6 +14,11 @@ import {
   formatBiblicalDate,
   formatDuration,
 } from '@/lib/utils/dateHelpers';
+import {
+  getLocalizedTitle,
+  getLocalizedValue,
+  getLocalizedShortName,
+} from '@/lib/utils/bilingual';
 
 interface EventDetailPanelProps {
   event: TimelineEvent | null;
@@ -96,15 +101,17 @@ export default function EventDetailPanel({
                             style={{ backgroundColor: eraConfig.color }}
                           />
                           <span className="text-text-secondary text-xs font-medium">
-                            {language === 'ko' ? eraConfig.titleKr : eraConfig.title}
+                            {getLocalizedTitle(eraConfig, language)}
                           </span>
                         </div>
                       )}
-                      <h2 className="text-text-primary mb-2 text-2xl font-bold">{event.title}</h2>
+                      <h2 className="text-text-primary mb-2 text-2xl font-bold">
+                        {getLocalizedTitle(event, language)}
+                      </h2>
                       {date && (
                         <div className="text-text-secondary flex items-center gap-2 text-sm">
                           <Calendar className="h-4 w-4" />
-                          <span>{formatBiblicalDate(date, language)}</span>
+                          <span>{formatBiblicalDate(date)}</span>
                           {duration && duration > 0 && (
                             <>
                               <span>•</span>
@@ -130,7 +137,7 @@ export default function EventDetailPanel({
                             onClick={() => open('person', person.slug)}
                             className="text-accent-person rounded-full bg-blue-50 px-3 py-1.5 text-sm transition-colors hover:bg-blue-100 dark:bg-blue-900/20 dark:hover:bg-blue-900/30"
                           >
-                            {person.name}
+                            {getLocalizedValue(person, 'name', person.name, language)}
                           </button>
                         ))}
                       </div>
@@ -151,7 +158,7 @@ export default function EventDetailPanel({
                             onClick={() => open('place', place.slug)}
                             className="text-accent-place rounded-full bg-green-50 px-3 py-1.5 text-sm transition-colors hover:bg-green-100 dark:bg-green-900/20 dark:hover:bg-green-900/30"
                           >
-                            {place.name}
+                            {getLocalizedValue(place, 'name', place.name, language)}
                           </button>
                         ))}
                       </div>
@@ -161,54 +168,54 @@ export default function EventDetailPanel({
                   {/* Related Events */}
                   {((event.precedes && event.precedes.length > 0) ||
                     (event.follows && event.follows.length > 0)) && (
-                    <div className="mb-6">
-                      <h3 className="text-text-secondary mb-3 text-sm font-semibold">
-                        {t('timeline.relatedEvents')}
-                      </h3>
+                      <div className="mb-6">
+                        <h3 className="text-text-secondary mb-3 text-sm font-semibold">
+                          {t('timeline.relatedEvents')}
+                        </h3>
 
-                      {/* Events this follows (before this event) */}
-                      {event.follows && event.follows.length > 0 && (
-                        <div className="mb-3">
-                          <div className="text-text-secondary mb-2 flex items-center gap-1 text-xs">
-                            <ArrowLeft className="h-3 w-3" />
-                            {t('timeline.follows')}
+                        {/* Events this follows (before this event) */}
+                        {event.follows && event.follows.length > 0 && (
+                          <div className="mb-3">
+                            <div className="text-text-secondary mb-2 flex items-center gap-1 text-xs">
+                              <ArrowLeft className="h-3 w-3" />
+                              {t('timeline.follows')}
+                            </div>
+                            <div className="space-y-2">
+                              {event.follows.map(relatedEvent => (
+                                <button
+                                  key={relatedEvent.id}
+                                  onClick={() => onEventSelect?.(relatedEvent.id)}
+                                  className="border-border hover:bg-hover w-full rounded-lg border px-3 py-2 text-left text-sm transition-colors"
+                                >
+                                  {getLocalizedTitle(relatedEvent, language)}
+                                </button>
+                              ))}
+                            </div>
                           </div>
-                          <div className="space-y-2">
-                            {event.follows.map(relatedEvent => (
-                              <button
-                                key={relatedEvent.id}
-                                onClick={() => onEventSelect?.(relatedEvent.id)}
-                                className="border-border hover:bg-hover w-full rounded-lg border px-3 py-2 text-left text-sm transition-colors"
-                              >
-                                {relatedEvent.title}
-                              </button>
-                            ))}
-                          </div>
-                        </div>
-                      )}
+                        )}
 
-                      {/* Events this precedes (after this event) */}
-                      {event.precedes && event.precedes.length > 0 && (
-                        <div>
-                          <div className="text-text-secondary mb-2 flex items-center gap-1 text-xs">
-                            <ArrowRight className="h-3 w-3" />
-                            {t('timeline.precedes')}
+                        {/* Events this precedes (after this event) */}
+                        {event.precedes && event.precedes.length > 0 && (
+                          <div>
+                            <div className="text-text-secondary mb-2 flex items-center gap-1 text-xs">
+                              <ArrowRight className="h-3 w-3" />
+                              {t('timeline.precedes')}
+                            </div>
+                            <div className="space-y-2">
+                              {event.precedes.map(relatedEvent => (
+                                <button
+                                  key={relatedEvent.id}
+                                  onClick={() => onEventSelect?.(relatedEvent.id)}
+                                  className="border-border hover:bg-hover w-full rounded-lg border px-3 py-2 text-left text-sm transition-colors"
+                                >
+                                  {getLocalizedTitle(relatedEvent, language)}
+                                </button>
+                              ))}
+                            </div>
                           </div>
-                          <div className="space-y-2">
-                            {event.precedes.map(relatedEvent => (
-                              <button
-                                key={relatedEvent.id}
-                                onClick={() => onEventSelect?.(relatedEvent.id)}
-                                className="border-border hover:bg-hover w-full rounded-lg border px-3 py-2 text-left text-sm transition-colors"
-                              >
-                                {relatedEvent.title}
-                              </button>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  )}
+                        )}
+                      </div>
+                    )}
 
                   {/* Scripture References */}
                   {event.verses && event.verses.length > 0 && (
@@ -225,11 +232,16 @@ export default function EventDetailPanel({
                             className="border-border hover:bg-hover block rounded-lg border p-3 transition-colors"
                           >
                             <p className="text-accent-event mb-1 text-xs font-medium">
-                              {verse.chapter.book.shortName} {verse.chapter.chapterNum}:
-                              {verse.verseNum}
+                              {getLocalizedShortName(verse.chapter.book, language)}{' '}
+                              {verse.chapter.chapterNum}:{verse.verseNum}
                             </p>
                             <p className="text-text-primary line-clamp-2 text-sm">
-                              {verse.verseText}
+                              {getLocalizedValue(
+                                verse,
+                                'mdText',
+                                verse.mdText || verse.verseText,
+                                language
+                              )}
                             </p>
                           </Link>
                         ))}

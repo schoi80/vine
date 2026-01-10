@@ -146,11 +146,19 @@ export function formatBiblicalDate(
     const startYear = Math.abs(date.year);
     const endYear = Math.abs(date.endYear);
     const era = date.year < 0 ? bcLabel : adLabel;
+    
+    if (language === 'ko') {
+      return `${prefix}${era} ${startYear}-${endYear}년`;
+    }
     return `${prefix}${startYear}-${endYear} ${era}`;
   }
 
   const year = Math.abs(date.year);
   const era = date.year < 0 ? bcLabel : adLabel;
+  
+  if (language === 'ko') {
+    return `${prefix}${era} ${year}년`;
+  }
   return `${prefix}${year} ${era}`;
 }
 

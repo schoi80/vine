@@ -63,7 +63,7 @@ export function EventKeyInfo({ id }: EventKeyInfoProps) {
                 {t('event.date')}
               </dt>
               <dd className="text-neutral-12 dark:text-neutral-dark-12 text-right font-semibold">
-                {formatBiblicalDate(biblicalDate, language)}
+                {formatBiblicalDate(biblicalDate)}
               </dd>
             </div>
           )}

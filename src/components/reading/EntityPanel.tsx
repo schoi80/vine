@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import { FileText, GitBranch } from 'lucide-react';
 import { EntityType } from '@/lib/utils/parseEntityMentions';
@@ -21,6 +21,7 @@ import { PersonCoMentions } from '@/components/person/PersonCoMentions';
 import { EventTimelineChips } from '@/components/event/EventTimelineChips';
 import { EventDistribution } from '@/components/event/EventDistribution';
 import { EventCoMentions } from '@/components/event/EventCoMentions';
+import { ExpandableTextArea } from '@/components/ui/ExpandableTextArea';
 
 const PlaceMap = dynamic(
   () => import('@/components/place/PlaceMap').then(mod => ({ default: mod.PlaceMap })),
@@ -53,7 +54,7 @@ export interface EntityPanelProps {
  * EntityPanel - Container component for entity detail drawer
  *
  * This is the Container in the Container/View pattern.
- * Handles state (summary expansion), effects (body scroll lock, keyboard), and content orchestration.
+ * Handles state, effects (body scroll lock, keyboard), and content orchestration.
  * Delegates shell rendering to EntityPanelView.
  */
 export function EntityPanel({
@@ -73,36 +74,7 @@ export function EntityPanel({
   animationDamping,
   backdropClosable,
 }: EntityPanelProps) {
-  const summaryContainerRef = useRef<HTMLDivElement>(null);
   const { t, language } = useLanguage();
-  const [summaryExpanded, setSummaryExpanded] = useState(false);
-  const [isSummaryOverflowing, setIsSummaryOverflowing] = useState(false);
-
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setSummaryExpanded(false);
-  }, [entitySlug, entityType]);
-
-  useEffect(() => {
-    if (!summary || !summaryContainerRef.current) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setIsSummaryOverflowing(false);
-      return;
-    }
-
-    const checkOverflow = () => {
-      if (summaryContainerRef.current) {
-        const isOverflowing =
-          summaryContainerRef.current.scrollHeight > summaryContainerRef.current.clientHeight;
-        setIsSummaryOverflowing(isOverflowing);
-      }
-    };
-
-    checkOverflow();
-    const timer = setTimeout(checkOverflow, 100);
-
-    return () => clearTimeout(timer);
-  }, [summary, language, summaryExpanded]);
 
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
@@ -136,39 +108,7 @@ export function EntityPanel({
             <FileText className="h-3.5 w-3.5" />
             {t('entityPanel.summary')}
           </h3>
-          <div>
-            <div className="relative">
-              <div
-                ref={summaryContainerRef}
-                className={`relative overflow-hidden transition-all duration-200 ${
-                  summaryExpanded ? 'max-h-none' : 'max-h-[180px]'
-                }`}
-              >
-                <p className="text-neutral-11 dark:text-neutral-dark-11 text-xs leading-relaxed">
-                  {summary}
-                </p>
-              </div>
-              {!summaryExpanded && isSummaryOverflowing && (
-                <div
-                  className="summary-fade-gradient pointer-events-none absolute right-0 bottom-0 left-0 h-16"
-                  aria-hidden="true"
-                />
-              )}
-            </div>
-            {!summaryExpanded && isSummaryOverflowing && (
-              <div className="mt-2 flex justify-center">
-                <button
-                  type="button"
-                  onClick={() => setSummaryExpanded(true)}
-                  aria-expanded={summaryExpanded}
-                  aria-controls="entity-summary"
-                  className="bg-neutral-3 hover:bg-neutral-4 dark:bg-neutral-dark-3 dark:hover:bg-neutral-dark-4 rounded-md px-3 py-1.5 text-xs font-medium transition-all hover:shadow-sm"
-                >
-                  {t('entityPanel.showMore')}
-                </button>
-              </div>
-            )}
-          </div>
+          <ExpandableTextArea text={summary} maxHeight={180} />
         </div>
       )}
 
