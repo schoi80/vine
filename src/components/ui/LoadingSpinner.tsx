@@ -7,9 +7,9 @@ interface LoadingSpinnerProps {
 }
 
 const sizeMap = {
-  sm: 'w-4 h-4',
-  md: 'w-5 h-5',
-  lg: 'w-6 h-6',
+  sm: 'daisy-loading-sm',
+  md: 'daisy-loading-md',
+  lg: 'daisy-loading-lg',
 };
 
 export default function LoadingSpinner({
@@ -21,7 +21,7 @@ export default function LoadingSpinner({
     <span
       role="status"
       aria-label={ariaLabel}
-      className={`border-neutral-6 border-t-neutral-11 inline-block animate-spin rounded-full border-2 ${sizeMap[size]} ${className}`}
+      className={`daisy-loading daisy-loading-dots ${sizeMap[size]} ${className}`}
     />
   );
 }
