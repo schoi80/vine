@@ -1,9 +1,7 @@
 @import 'tailwindcss';
 @import 'leaflet/dist/leaflet.css';
 
-/* daisyUI Component Library - Use with 'daisy-' prefix to avoid conflicts with custom styles */
 @plugin 'daisyui' {
-  prefix: 'daisy-';
   themes: light, dark;
   logs: false;
 }
@@ -390,7 +388,7 @@
   }
 }
 
-.drawer-enter {
+.vine-drawer-enter {
   animation: drawer-slide var(--duration-smooth) var(--ease-soft);
 }
 
@@ -502,40 +500,4 @@
 
 [data-theme='dark'] .summary-fade-gradient {
   background: linear-gradient(to bottom, transparent, #171717);
-}
-
-.badge {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  height: 1.25rem;
-  font-size: 0.75rem;
-  line-height: 1rem;
-  width: fit-content;
-  padding-left: 0.563rem;
-  padding-right: 0.563rem;
-  border-radius: 9999px;
-  font-weight: 500;
-  transition-property: color, background-color, border-color;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 200ms;
-  font-variant-numeric: tabular-nums;
-}
-
-.badge-neutral {
-  background-color: var(--color-neutral-200);
-  color: var(--color-neutral-700);
-}
-
-[data-theme='dark'] .badge-neutral {
-  background-color: var(--color-neutral-dark-4);
-  color: var(--color-neutral-dark-11);
-}
-
-.badge-sm {
-  height: 1rem;
-  font-size: 0.625rem;
-  line-height: 0.75rem;
-  padding-left: 0.438rem;
-  padding-right: 0.438rem;
 }

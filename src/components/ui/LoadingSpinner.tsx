@@ -7,9 +7,9 @@ interface LoadingSpinnerProps {
 }
 
 const sizeMap = {
-  sm: 'daisy-loading-sm',
-  md: 'daisy-loading-md',
-  lg: 'daisy-loading-lg',
+  sm: 'loading-sm',
+  md: 'loading-md',
+  lg: 'loading-lg',
 };
 
 export default function LoadingSpinner({
@@ -21,7 +21,7 @@ export default function LoadingSpinner({
     <span
       role="status"
       aria-label={ariaLabel}
-      className={`daisy-loading daisy-loading-dots ${sizeMap[size]} ${className}`}
+      className={`loading loading-dots ${sizeMap[size]} ${className}`}
     />
   );
 }

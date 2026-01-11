@@ -28,33 +28,33 @@ Bilingual (English/Korean) Bible Graph Explorer. Rich scripture context via rela
 - **Bilingual**: Use `useLanguage()` hook. **No hardcoded text** in components.
 - **Commits**: Conventional Commits MANDATORY (`feat:`, `fix:`, `docs:`, etc.).
 - **Styling**: Tailwind CSS v4. Use utility classes from `src/app/globals.css`.
-- **daisyUI**: v5 component library with `daisy-` prefix. See daisyUI section below.
+- **daisyUI**: v5 component library. See daisyUI section below.
 - **State**: Centralized contexts in `src/lib/contexts/`.
 
 ## DAISYUI USAGE
 
-daisyUI v5 is installed with a **`daisy-` prefix** to avoid conflicts with custom styles.
+daisyUI v5 is installed for pre-built UI components.
 
 ### Component Class Pattern
 
 ```html
-<!-- Use daisy- prefix for all daisyUI classes -->
-<button class="daisy-btn daisy-btn-primary">Button</button>
-<div class="daisy-card bg-bg-secondary">
-  <div class="daisy-card-body">Content</div>
+<!-- daisyUI components work without prefix -->
+<button class="btn btn-primary">Button</button>
+<div class="card bg-bg-secondary">
+  <div class="card-body">Content</div>
 </div>
-<input class="daisy-input daisy-input-bordered" />
+<input class="input input-bordered" />
 ```
 
 ### When to Use daisyUI vs Custom
 
-| Use daisyUI (`daisy-` prefix)      | Use Custom Styles                           |
+| Use daisyUI                        | Use Custom Styles                           |
 | :--------------------------------- | :------------------------------------------ |
 | Forms: inputs, selects, checkboxes | Entity badges (Person, Place, Event)        |
 | Modals, drawers, tooltips          | Typography: `.text-verse`, `.text-verse-kr` |
 | Navigation: navbar, menu, tabs     | Color system: `--color-accent-*`            |
 | Data display: tables, stats        | Custom animations                           |
-| Feedback: alerts, loading, toast   | Existing `.badge` component                 |
+| Feedback: alerts, loading, toast   | `<Badge />` component from `ui/Badge.tsx`   |
 
 ### Available Themes
 
