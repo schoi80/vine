@@ -3,11 +3,7 @@
 import Link from 'next/link';
 import { BookOpen } from 'lucide-react';
 import { useLanguage } from '@/lib/contexts/LanguageContext';
-import {
-  getLocalizedBookName,
-  getLocalizedShortName,
-  getLocalizedTitle,
-} from '@/lib/utils/bilingual';
+import { getLocalizedBookName, getLocalizedShortName } from '@/lib/utils/bilingual';
 import type { Book } from '@/app/browse/page';
 
 function divisionColorClass(title: string | undefined) {

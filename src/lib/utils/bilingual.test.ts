@@ -1,10 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import {
-  getTranslation,
-  getLocalizedTitle,
-  getLocalizedBookName,
-  getLocalizedShortName,
-} from './bilingual';
+import { getTranslation, getLocalizedBookName } from './bilingual';
 import { Translatable } from '@/lib/types/hierarchy';
 
 describe('bilingual utilities', () => {

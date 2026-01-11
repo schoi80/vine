@@ -42,37 +42,47 @@ export interface TimelineEvent extends Translatable {
   era: EventEra;
 
   // Relationships
-  participants: Array<Translatable & {
-    id: string;
-    name: string;
-    slug: string;
-    gender?: 'Male' | 'Female' | null;
-  }>;
-  occurredIn: Array<Translatable & {
-    id: string;
-    name: string;
-    slug: string;
-  }>;
-  verses: Array<Translatable & {
-    verseText: string;
-    mdText?: string;
-    verseNum: number;
-    chapter: {
-      chapterNum: number;
-      book: Translatable & {
-        shortName: string;
-        slug: string;
+  participants: Array<
+    Translatable & {
+      id: string;
+      name: string;
+      slug: string;
+      gender?: 'Male' | 'Female' | null;
+    }
+  >;
+  occurredIn: Array<
+    Translatable & {
+      id: string;
+      name: string;
+      slug: string;
+    }
+  >;
+  verses: Array<
+    Translatable & {
+      verseText: string;
+      mdText?: string;
+      verseNum: number;
+      chapter: {
+        chapterNum: number;
+        book: Translatable & {
+          shortName: string;
+          slug: string;
+        };
       };
-    };
-  }>;
-  precedes: Array<Translatable & {
-    id: string;
-    title: string;
-  }>;
-  follows: Array<Translatable & {
-    id: string;
-    title: string;
-  }>;
+    }
+  >;
+  precedes: Array<
+    Translatable & {
+      id: string;
+      title: string;
+    }
+  >;
+  follows: Array<
+    Translatable & {
+      id: string;
+      title: string;
+    }
+  >;
 }
 
 export interface TimelineNode {

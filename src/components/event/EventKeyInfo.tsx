@@ -16,7 +16,7 @@ interface EventKeyInfoProps {
 }
 
 export function EventKeyInfo({ id }: EventKeyInfoProps) {
-  const { t, language } = useLanguage();
+  const { t } = useLanguage();
 
   const { data, loading } = useQuery(EVENT_PLACES_CHIPS, {
     variables: {
