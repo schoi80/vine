@@ -48,13 +48,13 @@ export default async function BrowsePage() {
     title: testament.title,
     titleKr: getLocalizedTitle(testament, 'ko'),
     translations: testament.translations,
-    divisions: testament.divisions
+    divisions: [...testament.divisions]
       .sort((a: any, b: any) => a.title.localeCompare(b.title))
       .map((division: any) => ({
         title: division.title,
         titleKr: getLocalizedTitle(division, 'ko'),
         translations: division.translations,
-        books: division.books
+        books: [...division.books]
           .sort((a: any, b: any) => a.bookOrder - b.bookOrder)
           .map((book: any) => ({
             slug: book.slug,
@@ -69,7 +69,7 @@ export default async function BrowsePage() {
             translations: book.translations,
           })),
       })),
-    books: testament.books
+    books: [...testament.books]
       .sort((a: any, b: any) => a.bookOrder - b.bookOrder)
       .map((book: any) => ({
         slug: book.slug,

@@ -164,54 +164,54 @@ export default function EventDetailPanel({
                   {/* Related Events */}
                   {((event.precedes && event.precedes.length > 0) ||
                     (event.follows && event.follows.length > 0)) && (
-                    <div className="mb-6">
-                      <h3 className="text-text-secondary mb-3 text-sm font-semibold">
-                        {t('timeline.relatedEvents')}
-                      </h3>
+                      <div className="mb-6">
+                        <h3 className="text-text-secondary mb-3 text-sm font-semibold">
+                          {t('timeline.relatedEvents')}
+                        </h3>
 
-                      {/* Events this follows (before this event) */}
-                      {event.follows && event.follows.length > 0 && (
-                        <div className="mb-3">
-                          <div className="text-text-secondary mb-2 flex items-center gap-1 text-xs">
-                            <ArrowLeft className="h-3 w-3" />
-                            {t('timeline.follows')}
+                        {/* Events this follows (before this event) */}
+                        {event.follows && event.follows.length > 0 && (
+                          <div className="mb-3">
+                            <div className="text-text-secondary mb-2 flex items-center gap-1 text-xs">
+                              <ArrowLeft className="h-3 w-3" />
+                              {t('timeline.follows')}
+                            </div>
+                            <div className="space-y-2">
+                              {event.follows.map(relatedEvent => (
+                                <button
+                                  key={relatedEvent.id}
+                                  onClick={() => onEventSelect?.(relatedEvent.id)}
+                                  className="border-border hover:bg-hover w-full rounded-lg border px-3 py-2 text-left text-sm transition-colors"
+                                >
+                                  {getLocalizedTitle(relatedEvent, language)}
+                                </button>
+                              ))}
+                            </div>
                           </div>
-                          <div className="space-y-2">
-                            {event.follows.map(relatedEvent => (
-                              <button
-                                key={relatedEvent.id}
-                                onClick={() => onEventSelect?.(relatedEvent.id)}
-                                className="border-border hover:bg-hover w-full rounded-lg border px-3 py-2 text-left text-sm transition-colors"
-                              >
-                                {getLocalizedTitle(relatedEvent, language)}
-                              </button>
-                            ))}
-                          </div>
-                        </div>
-                      )}
+                        )}
 
-                      {/* Events this precedes (after this event) */}
-                      {event.precedes && event.precedes.length > 0 && (
-                        <div>
-                          <div className="text-text-secondary mb-2 flex items-center gap-1 text-xs">
-                            <ArrowRight className="h-3 w-3" />
-                            {t('timeline.precedes')}
+                        {/* Events this precedes (after this event) */}
+                        {event.precedes && event.precedes.length > 0 && (
+                          <div>
+                            <div className="text-text-secondary mb-2 flex items-center gap-1 text-xs">
+                              <ArrowRight className="h-3 w-3" />
+                              {t('timeline.precedes')}
+                            </div>
+                            <div className="space-y-2">
+                              {event.precedes.map(relatedEvent => (
+                                <button
+                                  key={relatedEvent.id}
+                                  onClick={() => onEventSelect?.(relatedEvent.id)}
+                                  className="border-border hover:bg-hover w-full rounded-lg border px-3 py-2 text-left text-sm transition-colors"
+                                >
+                                  {getLocalizedTitle(relatedEvent, language)}
+                                </button>
+                              ))}
+                            </div>
                           </div>
-                          <div className="space-y-2">
-                            {event.precedes.map(relatedEvent => (
-                              <button
-                                key={relatedEvent.id}
-                                onClick={() => onEventSelect?.(relatedEvent.id)}
-                                className="border-border hover:bg-hover w-full rounded-lg border px-3 py-2 text-left text-sm transition-colors"
-                              >
-                                {getLocalizedTitle(relatedEvent, language)}
-                              </button>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  )}
+                        )}
+                      </div>
+                    )}
 
                   {/* Scripture References */}
                   {event.verses && event.verses.length > 0 && (
@@ -234,8 +234,8 @@ export default function EventDetailPanel({
                             <p className="text-text-primary line-clamp-2 text-sm">
                               {getLocalizedValue(
                                 verse,
-                                'mdText',
-                                verse.mdText || verse.verseText,
+                                'text',
+                                verse.text,
                                 language
                               )}
                             </p>

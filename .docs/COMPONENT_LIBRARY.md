@@ -196,8 +196,6 @@ Enhanced verse display with inline entity mentions and optional dual-language.
     id: string
     verseNum: number
     verseText: string
-    mdText: string
-    mdTextKr: string
     mentionsPeople: Array<{...}>
     mentionsPlaces: Array<{...}>
     describesEvents: Array<{...}>

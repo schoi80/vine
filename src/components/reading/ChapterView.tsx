@@ -11,9 +11,7 @@ import { Languages } from 'lucide-react';
 interface Verse {
   id: string;
   verseNum: number;
-  verseText: string;
-  mdText: string;
-  mdTextKr: string;
+  text: string;
   mentionsPeople: Array<{
     id: string;
     slug: string;

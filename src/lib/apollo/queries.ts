@@ -58,13 +58,12 @@ export const GET_CHAPTER_FOR_READING = gql`
                 node {
                   id
                   verseNum
-                  verseText
+                  text
                   translations(where: { language: { eq: "ko" } }) {
                     language
                     field
                     text
                   }
-                  mdText
                   translations(where: { language: { eq: "ko" } }) {
                     language
                     field
@@ -637,13 +636,7 @@ export const GET_ALL_TIMELINE_EVENTS = gql`
         slug
       }
       verses {
-        verseText
-        translations(where: { language: { eq: "ko" } }) {
-          language
-          field
-          text
-        }
-        mdText
+        text
         translations(where: { language: { eq: "ko" } }) {
           language
           field
@@ -728,13 +721,7 @@ export const PERSON_PANEL_QUERY = gql`
           node {
             id
             verseNum
-            verseText
-            translations(where: { language: { eq: "ko" } }) {
-              language
-              field
-              text
-            }
-            mdText
+            text
             translations(where: { language: { eq: "ko" } }) {
               language
               field
@@ -785,13 +772,7 @@ export const PLACE_PANEL_QUERY = gql`
           node {
             id
             verseNum
-            verseText
-            translations(where: { language: { eq: "ko" } }) {
-              language
-              field
-              text
-            }
-            mdText
+            text
             translations(where: { language: { eq: "ko" } }) {
               language
               field
@@ -838,13 +819,7 @@ export const EVENT_PANEL_QUERY = gql`
           node {
             id
             verseNum
-            verseText
-            translations(where: { language: { eq: "ko" } }) {
-              language
-              field
-              text
-            }
-            mdText
+            text
             translations(where: { language: { eq: "ko" } }) {
               language
               field
@@ -884,13 +859,7 @@ export const PERSON_VERSES_QUERY = gql`
           node {
             id
             verseNum
-            verseText
-            translations(where: { language: { eq: "ko" } }) {
-              language
-              field
-              text
-            }
-            mdText
+            text
             translations(where: { language: { eq: "ko" } }) {
               language
               field
@@ -970,13 +939,7 @@ export const PLACE_VERSES_QUERY = gql`
           node {
             id
             verseNum
-            verseText
-            translations(where: { language: { eq: "ko" } }) {
-              language
-              field
-              text
-            }
-            mdText
+            text
             translations(where: { language: { eq: "ko" } }) {
               language
               field
@@ -1056,13 +1019,7 @@ export const EVENT_VERSES_QUERY = gql`
           node {
             id
             verseNum
-            verseText
-            translations(where: { language: { eq: "ko" } }) {
-              language
-              field
-              text
-            }
-            mdText
+            text
             translations(where: { language: { eq: "ko" } }) {
               language
               field

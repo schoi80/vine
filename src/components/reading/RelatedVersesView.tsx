@@ -1,4 +1,3 @@
-import React from 'react';
 import { ScrollText } from 'lucide-react';
 import { parseEntityMentions, parseItalics } from '@/lib/utils/parseEntityMentions';
 import LoadingSpinner from '@/components/ui/LoadingSpinner';

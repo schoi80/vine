@@ -102,7 +102,7 @@ export function RelatedVerses({
         bookOrder: verse.chapter?.book?.bookOrder ?? 999,
         chapter: verse.chapter?.chapterNum || 0,
         verse: verse.verseNum,
-        text: getLocalizedValue(verse, 'mdText', verse.mdText || verse.verseText || '', language),
+        text: getLocalizedValue(verse, 'text', verse.text || '', language),
       };
     })
     .sort(

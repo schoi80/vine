@@ -30,15 +30,15 @@ const VerseCard = memo(function VerseCard({
   const [hoveredEntity, setHoveredEntity] = useState<string | null>(null);
   const { open } = useEntityPanel();
 
-  const text = getLocalizedValue(verse, 'mdText', verse.mdText || verse.verseText, language);
+  const text = getLocalizedValue(verse, 'text', verse.text, language);
 
   const secondaryText = showDualLanguage
     ? getLocalizedValue(
-        verse,
-        'mdText',
-        verse.mdText || verse.verseText,
-        language === 'en' ? 'ko' : 'en'
-      )
+      verse,
+      'text',
+      verse.text,
+      language === 'en' ? 'ko' : 'en'
+    )
     : undefined;
 
   const entities = [

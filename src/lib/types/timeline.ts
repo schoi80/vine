@@ -59,8 +59,7 @@ export interface TimelineEvent extends Translatable {
   >;
   verses: Array<
     Translatable & {
-      verseText: string;
-      mdText?: string;
+      text: string;
       verseNum: number;
       chapter: {
         chapterNum: number;
